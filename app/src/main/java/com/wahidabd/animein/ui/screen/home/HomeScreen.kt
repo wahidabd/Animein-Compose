@@ -23,6 +23,7 @@ import androidx.paging.compose.items
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
+import com.wahidabd.animein.ui.components.home.AnimeItem
 import com.wahidabd.animein.ui.components.home.ProfileSearch
 import com.wahidabd.animein.ui.theme.ColorPrimary
 import org.koin.androidx.compose.koinViewModel
@@ -43,45 +44,32 @@ fun HomeScreen(
     val anime = viewModel.anime.value.collectAsLazyPagingItems()
     val listState: LazyListState = rememberLazyListState()
 
-    LazyColumn(
-        state = listState,
+    Column(
         modifier = Modifier
             .background(ColorPrimary)
             .fillMaxSize()
-    ){
-        items(anime){
-            Text(text = it?.title.toString(), color = Color.White)
-            Spacer(modifier = Modifier.height(12.dp))
-        }
+    ) {
+        ProfileSearch(navigator = navigator)
 
-//    Column(
-//        modifier = Modifier
-//            .background(ColorPrimary)
-//    ) {
-//        ProfileSearch(navigator = navigator)
-//        LazyColumn(
-////            columns = GridCells.Fixed(2),
-////            verticalArrangement = Arrangement.spacedBy(12.dp),
-////            horizontalArrangement = Arrangement.spacedBy(10.dp),
-//            modifier = Modifier
-//                .padding(horizontal = 16.dp)
-//                .fillMaxSize(),
-//            state = listState
-//        ) {
-//
-//            items(anime) {
-//                Text(text = it?.title.toString(), color = Color.White)
-////                AnimeItem(data = it!!) {}
-//            }
-//
-//            when (anime.loadState.refresh) {
-//                is LoadState.Loading -> {
-//
-//                }
-//                is LoadState.Error -> {}
-//                else -> {}
-//            }
-//        }
+        LazyColumn(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .fillMaxSize(),
+            state = listState
+        ) {
+
+            items(anime) {
+                AnimeItem(data = it!!) {}
+            }
+
+            when (anime.loadState.refresh) {
+                is LoadState.Loading -> {
+
+                }
+                is LoadState.Error -> {}
+                else -> {}
+            }
+        }
 
 //        LazyColumn(
 //            state = listState

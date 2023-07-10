@@ -28,7 +28,7 @@ class AnimeDatSource : AnimeRepository {
             config = PagingConfig(
                 pageSize = 10,
                 enablePlaceholders = false
-            ), pagingSourceFactory = { AnimePagingSource() }
+            ), pagingSourceFactory = { AnimePagingSource("anime") }
         ).flow
 
 
