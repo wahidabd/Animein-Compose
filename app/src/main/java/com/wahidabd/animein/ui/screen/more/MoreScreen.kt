@@ -1,4 +1,4 @@
-package com.wahidabd.animein.presentation.home
+package com.wahidabd.animein.ui.screen.more
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -14,7 +14,7 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
 @Destination
 @Composable
-fun HomeScreen(
+fun MoreScreen(
     navigator: DestinationsNavigator
 ) {
 
@@ -22,6 +22,6 @@ fun HomeScreen(
 
 @Preview
 @Composable
-fun HomeScreenPreview() {
-    HomeScreen(EmptyDestinationsNavigator)
+fun MoreScreenScreen() {
+    MoreScreen(EmptyDestinationsNavigator)
 }

@@ -1,4 +1,4 @@
-package com.wahidabd.animein.presentation
+package com.wahidabd.animein.ui.screen
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,20 +9,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.rememberNavHostEngine
-import com.wahidabd.animein.presentation.destinations.BookmarkScreenDestination
-import com.wahidabd.animein.presentation.destinations.HistoryScreenDestination
-import com.wahidabd.animein.presentation.destinations.HomeScreenDestination
-import com.wahidabd.animein.presentation.destinations.MoreScreenDestination
 import com.wahidabd.animein.ui.components.bottomNavigation.BottomNavigationBar
+import com.wahidabd.animein.ui.screen.destinations.BookmarkScreenDestination
+import com.wahidabd.animein.ui.screen.destinations.HistoryScreenDestination
+import com.wahidabd.animein.ui.screen.destinations.HomeScreenDestination
+import com.wahidabd.animein.ui.screen.destinations.MoreScreenDestination
 import com.wahidabd.animein.ui.theme.AnimeinTheme
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -32,7 +29,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             AnimeinTheme {
                 // A surface container using the 'background' color from the theme
-                DestinationsNavHost(navGraph = NavGraphs.root)
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

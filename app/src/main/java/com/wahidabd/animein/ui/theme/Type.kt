@@ -20,19 +20,19 @@ val Typography = Typography(
     labelSmall = TextStyle(
         fontFamily = QuickSansFamily,
         fontWeight = FontWeight.Light,
-        fontSize = 8.sp,
+        fontSize = 10.sp,
         letterSpacing = 0.5.sp
     ),
     labelMedium = TextStyle(
         fontFamily = QuickSansFamily,
         fontWeight = FontWeight.Light,
-        fontSize = 10.sp,
+        fontSize = 12.sp,
         letterSpacing = 0.5.sp
     ),
     labelLarge = TextStyle(
         fontFamily = QuickSansFamily,
         fontWeight = FontWeight.Light,
-        fontSize = 12.sp,
+        fontSize = 14.sp,
         letterSpacing = 0.5.sp
     ),
     bodySmall = TextStyle(

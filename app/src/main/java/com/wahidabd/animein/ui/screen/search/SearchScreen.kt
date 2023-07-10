@@ -1,4 +1,4 @@
-package com.wahidabd.animein.presentation.bookmark
+package com.wahidabd.animein.ui.screen.search
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -12,9 +12,10 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
  * Github github.com/wahidabd.
  */
 
+
 @Destination
 @Composable
-fun BookmarkScreen(
+fun SearchScreen(
     navigator: DestinationsNavigator
 ) {
 
@@ -22,6 +23,6 @@ fun BookmarkScreen(
 
 @Preview
 @Composable
-fun BookmarkScreenPreview() {
-    BookmarkScreen(EmptyDestinationsNavigator)
+fun SearchScreenPreview() {
+    SearchScreen(EmptyDestinationsNavigator)
 }

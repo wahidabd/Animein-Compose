@@ -66,6 +66,7 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
+    implementation "androidx.compose.ui:ui-util:1.4.3"
 
     implementation "com.github.wahidabd:one-library:1.1.12"
 
@@ -77,6 +78,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
     implementation "com.google.accompanist:accompanist-navigation-material:0.31.5-beta"
     implementation 'com.google.accompanist:accompanist-navigation-animation:0.31.2-alpha'
+    implementation "com.google.accompanist:accompanist-flowlayout:0.20.0"
 
     // constraint
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
@@ -94,10 +96,17 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-storage-ktx")
 
+    // lottie
+    implementation "com.airbnb.android:lottie-compose:5.0.3"
+
     // koin
-    implementation("io.insert-koin:koin-android:3.3.3")
+    implementation("io.insert-koin:koin-android:3.4.0")
     implementation("io.insert-koin:koin-androidx-workmanager:3.3.3")
     implementation("io.insert-koin:koin-androidx-navigation:3.3.3")
+    implementation("io.insert-koin:koin-androidx-compose:3.4.0")
+
+    // Pagination
+    implementation("androidx.paging:paging-compose:1.0.0-alpha18")
 
     // logging
     implementation("com.jakewharton.timber:timber:5.0.1")

@@ -1,8 +1,7 @@
-package com.wahidabd.animein.presentation.search
+package com.wahidabd.animein.ui.screen.profile
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
@@ -13,9 +12,8 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
  */
 
 
-@Destination
 @Composable
-fun SearchScreen(
+fun ProfileScreen(
     navigator: DestinationsNavigator
 ) {
 
@@ -23,6 +21,6 @@ fun SearchScreen(
 
 @Preview
 @Composable
-fun SearchScreenPreview() {
-    SearchScreen(EmptyDestinationsNavigator)
+fun ProfileScreenPreview() {
+    ProfileScreen(EmptyDestinationsNavigator)
 }
