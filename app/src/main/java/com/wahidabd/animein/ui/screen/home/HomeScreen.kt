@@ -25,7 +25,10 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import com.wahidabd.animein.ui.components.home.AnimeItem
 import com.wahidabd.animein.ui.components.home.ProfileSearch
+import com.wahidabd.animein.ui.screen.player.PlayerViewModel
 import com.wahidabd.animein.ui.theme.ColorPrimary
+import com.wahidabd.animein.utils.collectStateFlow
+import com.wahidabd.library.utils.extensions.debug
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -37,12 +40,23 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
     navigator: DestinationsNavigator,
-    viewModel: HomeViewModel = koinViewModel()
+    viewModel: HomeViewModel = koinViewModel(),
+    playerViewModel: PlayerViewModel = koinViewModel()
 ) {
 
 
     val anime = viewModel.anime.value.collectAsLazyPagingItems()
     val listState: LazyListState = rememberLazyListState()
+
+
+    playerViewModel.player.collectStateFlow(onLoading = {}, onFailure = { _, _ -> }){
+        debug { "Video Source $it" }
+        playerViewModel.videoUrl(it[0])
+    }
+
+    playerViewModel.videoUrl.collectStateFlow(onLoading = {}, onFailure = { _, _ -> }){
+        debug { "Video Url -> $it" }
+    }
 
     Column(
         modifier = Modifier
@@ -50,6 +64,7 @@ fun HomeScreen(
             .fillMaxSize()
     ) {
         ProfileSearch(navigator = navigator)
+
 
         LazyColumn(
             modifier = Modifier
@@ -66,6 +81,7 @@ fun HomeScreen(
                 is LoadState.Loading -> {
 
                 }
+
                 is LoadState.Error -> {}
                 else -> {}
             }

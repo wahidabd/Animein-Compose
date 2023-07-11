@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import com.wahidabd.animein.ui.components.utils.RoundedIcon
+import com.wahidabd.animein.ui.screen.destinations.VideoPlayerScreenDestination
 import com.wahidabd.animein.ui.theme.ColorOnPrimary
 import com.wahidabd.animein.ui.theme.ColorPrimary
 import com.wahidabd.animein.utils.enums.AnimeType
@@ -40,7 +41,9 @@ fun ProfileSearch(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        RoundedIcon(iconTint = ColorOnPrimary, icon = Icons.Default.Person, background = ColorPrimary){}
+        RoundedIcon(iconTint = ColorOnPrimary, icon = Icons.Default.Person, background = ColorPrimary){
+            navigator.navigate(VideoPlayerScreenDestination)
+        }
         RoundedIcon(iconTint = ColorOnPrimary, icon = Icons.Outlined.Search, background = ColorPrimary){}
     }
 }

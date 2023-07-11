@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import com.wahidabd.animein.data.anime.model.AnimeResponse
 import com.wahidabd.animein.data.anime.model.CarouselResponse
 import com.wahidabd.animein.data.anime.paging.AnimePagingSource
+import com.wahidabd.animein.data.parseCarousel
 import com.wahidabd.library.data.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

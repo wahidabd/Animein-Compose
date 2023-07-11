@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.airbnb.lottie.model.MutablePair
 import com.wahidabd.animein.data.anime.model.AnimeResponse
 import com.wahidabd.animein.domain.anime.AnimeUseCase
 import com.wahidabd.animein.domain.anime.model.Carousel
@@ -35,19 +36,22 @@ class HomeViewModel(private val useCase: AnimeUseCase) : ViewModel() {
     private val _carousel = MutableStateFlow<Resource<List<Carousel>>>(Resource.loading())
     val carousel: StateFlow<Resource<List<Carousel>>> get() = _carousel
 
+
+
     init {
         anime()
+        carousel()
     }
 
-    fun anime(){
-        viewModelScope.launch{
+    fun anime() {
+        viewModelScope.launch {
             _anime.value = useCase.anime()
                 .distinctUntilChanged()
                 .cachedIn(viewModelScope)
         }
     }
 
-    fun carousel(){
+    fun carousel() {
         useCase.carousel()
             .onEach { _carousel.value = it }
             .launchIn(viewModelScope)
