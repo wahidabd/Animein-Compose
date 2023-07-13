@@ -2,12 +2,9 @@ package com.wahidabd.animein.data
 
 import com.wahidabd.animein.data.anime.model.CarouselResponse
 import com.wahidabd.library.utils.extensions.debug
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import java.util.regex.Matcher
-import java.util.regex.Pattern
+import java.util.concurrent.TimeoutException
 
 
 /**
@@ -94,18 +91,35 @@ fun parsePlayer(document: Document): List<String> {
 
 // animeku
 fun getVideoUrl(document: Document): String {
-    val tag = document.getElementsByTag("video").attr("tabindex")
-    debug { "ANIMEKU -> $tag" }
 
-//    for (t in tag){
-//        if (t.data().contains("sources:")){
-//            val subString = t.data().substringAfter("[{'file':'").substringBefore("}]")
-//            debug { subString }
-//            debug { t.data() }
-//
-//
-//        }
-//    }
+    val tag = document.getElementsByTag("script")
+    for (i in tag){
+
+    }
 
     return "OK"
+}
+
+fun hxFile(url: String): String {
+    val jsoup = Jsoup.connect(url)
+        .get()
+
+    val hxUrl = jsoup.getElementsByTag("textarea")[0].text()
+
+    return try {
+        val base = "https://hxfile.co/"
+        val id = hxUrl.replace(base, "")
+        val hxJsoup = Jsoup.connect(hxUrl)
+            .data("op", "download2")
+            .data("id", id)
+            .userAgent("Mozilla")
+            .post()
+
+        hxJsoup.select("div.download-button > a").attr("href")
+    }catch (e: Exception){
+        when(e){
+            is TimeoutException -> e.message.toString()
+            else -> "Unknown Error Exception"
+        }
+    }
 }
