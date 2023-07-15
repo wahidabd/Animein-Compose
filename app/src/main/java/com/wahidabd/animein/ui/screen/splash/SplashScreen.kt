@@ -27,7 +27,7 @@ import kotlinx.coroutines.delay
 @Destination
 @Composable
 fun SplashScreen(
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator?
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -39,7 +39,7 @@ fun SplashScreen(
         Box(contentAlignment = Alignment.Center){
             LaunchedEffect(Unit){
                 delay(1000)
-                navigator.popBackStack()
+                navigator!!.popBackStack()
                 navigator.navigate(HomeScreenDestination)
             }
         }

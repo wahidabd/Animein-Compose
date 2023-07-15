@@ -22,14 +22,14 @@ import org.jsoup.Jsoup
  */
 
 
-class AnimeDatSource : AnimeRepository {
+class AnimeDataSource : AnimeRepository {
 
     override suspend fun anime(): Flow<PagingData<AnimeResponse>> =
         Pager(
             config = PagingConfig(
                 pageSize = 10,
                 enablePlaceholders = false
-            ), pagingSourceFactory = { AnimePagingSource("anime") }
+            ), pagingSourceFactory = { AnimePagingSource() }
         ).flow
 
 

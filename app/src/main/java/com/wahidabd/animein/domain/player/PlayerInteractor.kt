@@ -4,6 +4,7 @@ import com.wahidabd.animein.data.player.PlayerRepository
 import com.wahidabd.library.data.Resource
 import com.wahidabd.library.utils.coroutine.boundResource.InternetBoundResource
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 
 /**
@@ -12,9 +13,10 @@ import kotlinx.coroutines.flow.Flow
  */
 
 
-class PlayerInteractor(private val repository: PlayerRepository) : PlayerUseCase{
+class PlayerInteractor @Inject constructor(private val repository: PlayerRepository) :
+    PlayerUseCase {
     override fun player(): Flow<Resource<List<String>>> {
-        return object : InternetBoundResource<List<String>, List<String>>(){
+        return object : InternetBoundResource<List<String>, List<String>>() {
             override suspend fun createCall(): Flow<Resource<List<String>>> {
                 return repository.player()
             }
@@ -26,7 +28,7 @@ class PlayerInteractor(private val repository: PlayerRepository) : PlayerUseCase
     }
 
     override fun videoUrl(url: String): Flow<Resource<String>> {
-        return object : InternetBoundResource<String, String>(){
+        return object : InternetBoundResource<String, String>() {
             override suspend fun createCall(): Flow<Resource<String>> {
                 return repository.videoUrl(url)
             }

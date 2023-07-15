@@ -1,10 +1,9 @@
 package com.wahidabd.animein.data.player
 
-import com.wahidabd.animein.data.getVideoUrl
 import com.wahidabd.animein.data.hxFile
+import com.wahidabd.animein.data.mediafire
 import com.wahidabd.animein.data.parsePlayer
 import com.wahidabd.library.data.Resource
-import com.wahidabd.library.utils.extensions.debug
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -33,11 +32,7 @@ class PlayerDataSource : PlayerRepository {
 
     override suspend fun videoUrl(url: String): Flow<Resource<String>> {
         return flow {
-//            val document = Jsoup.connect("https://wibufile.com/en/qh5H15qhxJDfGBC/watch").get()
-
-            val desu = "https://desudrive.com/link/?id=eVYzczJaUk9LU0lNMEVHRVA4TzhVZzRtaDBoWWlzRlJMNitHalVVYQ=="
-            emit(Resource.success(hxFile(desu)))
-
+            emit(mediafire("https://www.mediafire.com/file/fji0gaa1jssobr9/Alqanime_IsekaiVendingMachine_02_360p.mp4/file"))
 
         }.flowOn(Dispatchers.IO)
     }

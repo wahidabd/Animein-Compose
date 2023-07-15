@@ -1,10 +1,10 @@
 package com.wahidabd.animein.data
 
 import com.wahidabd.animein.data.anime.model.CarouselResponse
+import com.wahidabd.library.data.Resource
 import com.wahidabd.library.utils.extensions.debug
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import java.util.concurrent.TimeoutException
 
 
 /**
@@ -89,37 +89,14 @@ fun parsePlayer(document: Document): List<String> {
 //    return "OK"
 //}
 
-// animeku
-fun getVideoUrl(document: Document): String {
 
-    val tag = document.getElementsByTag("script")
-    for (i in tag){
+fun anoboy(url: String): Resource<String> {
+    val jsoup = Jsoup.connect(url).get()
 
-    }
 
-    return "OK"
+
+
+    return Resource.success("OK")
 }
 
-fun hxFile(url: String): String {
-    val jsoup = Jsoup.connect(url)
-        .get()
 
-    val hxUrl = jsoup.getElementsByTag("textarea")[0].text()
-
-    return try {
-        val base = "https://hxfile.co/"
-        val id = hxUrl.replace(base, "")
-        val hxJsoup = Jsoup.connect(hxUrl)
-            .data("op", "download2")
-            .data("id", id)
-            .userAgent("Mozilla")
-            .post()
-
-        hxJsoup.select("div.download-button > a").attr("href")
-    }catch (e: Exception){
-        when(e){
-            is TimeoutException -> e.message.toString()
-            else -> "Unknown Error Exception"
-        }
-    }
-}

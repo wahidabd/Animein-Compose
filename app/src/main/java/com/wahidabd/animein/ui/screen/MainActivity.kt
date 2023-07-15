@@ -21,8 +21,10 @@ import com.wahidabd.animein.ui.screen.destinations.HistoryScreenDestination
 import com.wahidabd.animein.ui.screen.destinations.HomeScreenDestination
 import com.wahidabd.animein.ui.screen.destinations.MoreScreenDestination
 import com.wahidabd.animein.ui.theme.AnimeinTheme
+import dagger.hilt.android.AndroidEntryPoint
 
 @OptIn(ExperimentalAnimationApi::class)
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

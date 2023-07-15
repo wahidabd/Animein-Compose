@@ -1,5 +1,6 @@
 package com.wahidabd.animein.domain.anime.model
 
+import com.wahidabd.animein.data.anime.model.AnimeResponse
 import com.wahidabd.library.utils.common.emptyString
 
 
@@ -13,8 +14,12 @@ data class Anime(
     val slug: String? = emptyString(),
     val poster: String? = emptyString(),
     val rating: String? = emptyString(),
-    val episode: String? = emptyString(),
     val title: String? = emptyString(),
-    val subtitle: String? = emptyString(),
-    val season: String? = emptyString()
+    val type: String? = emptyString(),
+    val badge: String? = emptyString(),
+    val episode: String? = emptyString()
 )
+
+
+fun AnimeResponse.toDomain(): Anime =
+    Anime(slug, poster, rating, title, type, badge, episode)

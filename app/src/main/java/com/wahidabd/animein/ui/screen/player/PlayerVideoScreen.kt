@@ -1,6 +1,5 @@
 package com.wahidabd.animein.ui.screen.player
 
-import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,9 +14,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.google.android.exoplayer2.util.Util
 import com.ramcosta.composedestinations.annotation.Destination
 
 
@@ -32,8 +29,9 @@ import com.ramcosta.composedestinations.annotation.Destination
 fun VideoPlayerScreen() {
 
 //    val url = "https://pixeldrain.com/api/file/YJmppqsz?download"
-    val url = "https://desudrive.com/link/?id=eVYzczJkMWJLV2tCMjFLSkljL2tWRTlxbVZRYndONVBjYXE4c200SUc4dUJyVVRaV2JSalBqWTMxZEFraWZ0aTh1TWlabWVWYzVuSzNlWFhjVlBlV1BQRWxoV2Y2TCtsSE1HMUp1dTEvZFgwS0JIZnhtWDk0WTRQT1JCTWNiSDE1N3FvZ0Y0RGlTdUVpNDRNUFNtMU9sST0="
-//    val url = "https://s9download.krakenfiles.com/force-download/ZjVhOGVmZjQ4MjA3NzY1ZPPCmXb84Rb3NC0w8Z_DaNZVGAIDQihDftet2_UvyLpk/0KhdODRVUK"
+//    val url = "https://wibufile.com/videos/s1/I9pRdwn6ZTLikVV_1689182834.mp4"
+//    val url = "https://1xmcgre8ic3kpmjnhktyyx9rn6k02d8nravehb4croki3djrmu.ctmp.space/files/9/1jfyrcieayu0se/Alqanime_SUOneesanHS2_08_360p.mp4"
+    val url = "https://download1323.mediafire.com/w2s3zplyw4fgUrEsHfYOtZ0hFRH0OVGPFn1yfu8BK3pGyMWuy8AtuvIV26qsqPVxc82jaSVjkpLUQi8n7FfwnxAqrUjKf-eSyFUtj-hi5uoek5WMwS9yx27gbnjdS38fcK5Csxq27mbk9hgJUcTyDnzaSSmncZFN7-BrCc3QlMfmcg/fji0gaa1jssobr9/Alqanime_IsekaiVendingMachine_02_360p.mp4"
     val context = LocalContext.current
 
     Column(
@@ -42,18 +40,8 @@ fun VideoPlayerScreen() {
         verticalArrangement = Arrangement.Center
     ) {
 
-        // Declaring ExoPlayer
-//        val dataMediaSourceFactory: DataSource.Factory = DefaultHttpDataSource.Factory()
-//        val mediaSource = ProgressiveMediaSource.Factory(dataMediaSourceFactory)
-//            .createMediaSource(MediaItem.fromUri(url))
-
-
         val mExoPlayer = remember(context) {
             ExoPlayer.Builder(context).build().apply {
-//                val dataSourceFactory = DefaultDataSourceFactory(
-//                    context,
-//                    Util.getUserAgent(context, context.packageName)
-//                )
                 val dataMediaSourceFactory: DataSource.Factory = DefaultHttpDataSource.Factory()
                 val video = ProgressiveMediaSource
                     .Factory(dataMediaSourceFactory)

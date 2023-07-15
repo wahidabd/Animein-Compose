@@ -37,7 +37,7 @@ import com.wahidabd.animein.ui.theme.Shapes
 
 @Composable
 fun AnimeItem(
-    data: AnimeResponse,
+    data: AnimeResponse?,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -49,8 +49,8 @@ fun AnimeItem(
             .clip(Shapes.small)
     ) {
         AsyncImage(
-            model = data.poster,
-            contentDescription = data.title,
+            model = data?.poster,
+            contentDescription = data?.title,
             placeholder = painterResource(id = R.drawable.img_sample),
             error = painterResource(id = R.drawable.ic_load_error),
             contentScale = ContentScale.Crop,
@@ -68,7 +68,7 @@ fun AnimeItem(
         ) {
 
             Text(
-                text = data.title.toString(),
+                text = data?.title.toString(),
                 style = MaterialTheme.typography.headlineSmall,
                 color = Color.White,
                 maxLines = 2,
@@ -77,7 +77,7 @@ fun AnimeItem(
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = data.subtitle.toString(),
+                    text = data?.subtitle.toString(),
                     style = MaterialTheme.typography.bodySmall,
                     fontSize = 10.sp,
                     color = Color.LightGray
@@ -90,7 +90,7 @@ fun AnimeItem(
                         .padding(horizontal = 8.dp)
                 )
                 Text(
-                    text = data.season.toString(),
+                    text = data?.season.toString(),
                     style = MaterialTheme.typography.bodySmall,
                     fontSize = 10.sp,
                     maxLines = 1,

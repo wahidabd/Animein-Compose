@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.wahidabd.animein.ui.theme.ColorDarkPurple
 import com.wahidabd.animein.ui.theme.ColorDarkBlue
@@ -73,8 +74,13 @@ fun BottomNavigationBar(
                             selected = currentItem?.route?.contains(item.destination.route) == true,
                             onClick = {
                                 navController.navigate(item.destination.route){
-                                    navController.graph.startDestinationRoute?.let { route ->
-                                        popUpTo(route){saveState = true}
+//                                    navController.graph.startDestinationRoute?.let { route ->
+//                                        popUpTo(route){
+//                                            saveState = true
+//                                        }
+//                                    }
+                                    popUpTo(navController.graph.findStartDestination().id){
+                                        saveState = true
                                     }
                                     launchSingleTop = true
                                     restoreState = true

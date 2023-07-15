@@ -10,4 +10,6 @@ package com.wahidabd.animein.utils
 object Constant {
     const val POINT_SEPARATOR: String = "•"
     const val CAROUSEL_AUTO_SCROLL_TIMER: Long = 3000L
+    const val BASE_URL = "https://alqanime.net/"
+    const val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
 }

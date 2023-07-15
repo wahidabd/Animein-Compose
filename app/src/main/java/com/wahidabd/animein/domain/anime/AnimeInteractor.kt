@@ -9,6 +9,7 @@ import com.wahidabd.animein.domain.anime.model.toDomain
 import com.wahidabd.library.data.Resource
 import com.wahidabd.library.utils.coroutine.boundResource.InternetBoundResource
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 
 /**
@@ -17,14 +18,14 @@ import kotlinx.coroutines.flow.Flow
  */
 
 
-class AnimeInteractor(private val repository: AnimeRepository) : AnimeUseCase {
+class AnimeInteractor @Inject constructor(private val repository: AnimeRepository) : AnimeUseCase {
 
     override suspend fun anime(): Flow<PagingData<AnimeResponse>> {
         return repository.anime()
     }
 
     override fun carousel(): Flow<Resource<List<Carousel>>> =
-        object : InternetBoundResource<List<Carousel>, List<CarouselResponse>>(){
+        object : InternetBoundResource<List<Carousel>, List<CarouselResponse>>() {
             override suspend fun createCall(): Flow<Resource<List<CarouselResponse>>> {
                 return repository.carousel()
             }

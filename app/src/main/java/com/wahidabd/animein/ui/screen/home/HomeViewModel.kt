@@ -11,6 +11,7 @@ import com.wahidabd.animein.data.anime.model.AnimeResponse
 import com.wahidabd.animein.domain.anime.AnimeUseCase
 import com.wahidabd.animein.domain.anime.model.Carousel
 import com.wahidabd.library.data.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 /**
@@ -28,7 +30,8 @@ import kotlinx.coroutines.launch
  */
 
 
-class HomeViewModel(private val useCase: AnimeUseCase) : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor (private val useCase: AnimeUseCase) : ViewModel() {
 
     private val _anime = mutableStateOf<Flow<PagingData<AnimeResponse>>>(emptyFlow())
     val anime: State<Flow<PagingData<AnimeResponse>>> get() = _anime
