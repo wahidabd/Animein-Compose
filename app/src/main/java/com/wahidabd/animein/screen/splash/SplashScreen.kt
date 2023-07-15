@@ -1,4 +1,4 @@
-package com.wahidabd.animein.ui.screen.splash
+package com.wahidabd.animein.screen.splash
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.wahidabd.animein.ui.screen.destinations.HomeScreenDestination
+import com.wahidabd.animein.screen.destinations.HomeScreenDestination
 import com.wahidabd.animein.ui.theme.ColorPrimary
 import kotlinx.coroutines.delay
 

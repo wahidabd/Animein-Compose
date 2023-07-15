@@ -1,4 +1,4 @@
-package com.wahidabd.animein.data.home
+package com.wahidabd.animein.domain.home
 
 import com.wahidabd.animein.domain.anime.model.Anime
 import com.wahidabd.library.data.Resource
@@ -11,9 +11,8 @@ import kotlinx.coroutines.flow.Flow
  */
 
 
-interface HomeRepository {
+interface HomeUseCase {
     suspend fun popular(): Flow<Resource<List<Anime>>>
     suspend fun newUpdate(): Flow<Resource<List<Anime>>>
     suspend fun newAdded(): Flow<Resource<List<Anime>>>
-
 }

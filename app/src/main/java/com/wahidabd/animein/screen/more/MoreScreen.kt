@@ -1,4 +1,4 @@
-package com.wahidabd.animein.ui.screen.history
+package com.wahidabd.animein.screen.more
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -14,7 +14,7 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
 @Destination
 @Composable
-fun HistoryScreen(
+fun MoreScreen(
     navigator: DestinationsNavigator
 ) {
 
@@ -22,6 +22,6 @@ fun HistoryScreen(
 
 @Preview
 @Composable
-fun HistoryScreenPreview() {
-    HistoryScreen(EmptyDestinationsNavigator)
+fun MoreScreenScreen() {
+    MoreScreen(EmptyDestinationsNavigator)
 }

@@ -16,8 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
+import com.wahidabd.animein.screen.destinations.VideoPlayerScreenDestination
 import com.wahidabd.animein.ui.components.utils.RoundedIcon
-import com.wahidabd.animein.ui.screen.destinations.VideoPlayerScreenDestination
 import com.wahidabd.animein.ui.theme.ColorOnPrimary
 import com.wahidabd.animein.ui.theme.ColorPrimary
 import com.wahidabd.animein.utils.enums.AnimeType

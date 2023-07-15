@@ -7,7 +7,7 @@ package com.wahidabd.animein.utils.enums
  */
 
 
-enum class AnimeType (title: String){
-    ANIME("Anime"),
-    MOVIE("Movie")
+enum class AnimeType (title: String, query: String){
+    NEW_UPDATE("New Update", ""),
+    NEW_ADDED("New Added", "")
 }

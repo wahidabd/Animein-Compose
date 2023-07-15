@@ -16,10 +16,9 @@ data class Anime(
     val rating: String? = emptyString(),
     val title: String? = emptyString(),
     val type: String? = emptyString(),
-    val badge: String? = emptyString(),
     val episode: String? = emptyString()
 )
 
 
 fun AnimeResponse.toDomain(): Anime =
-    Anime(slug, poster, rating, title, type, badge, episode)
+    Anime(slug, poster, rating, title, type, episode)

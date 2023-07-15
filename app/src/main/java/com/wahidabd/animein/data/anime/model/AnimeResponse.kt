@@ -15,6 +15,5 @@ data class AnimeResponse(
     val rating: String? = emptyString(),
     val title: String? = emptyString(),
     val type: String? = emptyString(),
-    val badge: String? = emptyString(),
     val episode: String? = emptyString()
 )

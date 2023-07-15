@@ -1,11 +1,11 @@
 package com.wahidabd.animein.ui.components.bottomNavigation
 
 import com.wahidabd.animein.R
-import com.wahidabd.animein.ui.screen.destinations.BookmarkScreenDestination
-import com.wahidabd.animein.ui.screen.destinations.Destination
-import com.wahidabd.animein.ui.screen.destinations.HistoryScreenDestination
-import com.wahidabd.animein.ui.screen.destinations.HomeScreenDestination
-import com.wahidabd.animein.ui.screen.destinations.MoreScreenDestination
+import com.wahidabd.animein.screen.destinations.BookmarkScreenDestination
+import com.wahidabd.animein.screen.destinations.Destination
+import com.wahidabd.animein.screen.destinations.HistoryScreenDestination
+import com.wahidabd.animein.screen.destinations.HomeScreenDestination
+import com.wahidabd.animein.screen.destinations.MoreScreenDestination
 
 
 /**

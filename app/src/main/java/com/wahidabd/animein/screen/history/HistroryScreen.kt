@@ -1,4 +1,4 @@
-package com.wahidabd.animein.ui.screen.bookmark
+package com.wahidabd.animein.screen.history
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -14,7 +14,7 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
 @Destination
 @Composable
-fun BookmarkScreen(
+fun HistoryScreen(
     navigator: DestinationsNavigator
 ) {
 
@@ -22,6 +22,6 @@ fun BookmarkScreen(
 
 @Preview
 @Composable
-fun BookmarkScreenPreview() {
-    BookmarkScreen(EmptyDestinationsNavigator)
+fun HistoryScreenPreview() {
+    HistoryScreen(EmptyDestinationsNavigator)
 }

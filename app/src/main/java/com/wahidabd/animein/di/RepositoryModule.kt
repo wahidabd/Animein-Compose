@@ -2,10 +2,14 @@ package com.wahidabd.animein.di
 
 import com.wahidabd.animein.data.anime.AnimeDataSource
 import com.wahidabd.animein.data.anime.AnimeRepository
+import com.wahidabd.animein.data.home.HomeDataSource
+import com.wahidabd.animein.data.home.HomeRepository
 import com.wahidabd.animein.data.player.PlayerDataSource
 import com.wahidabd.animein.data.player.PlayerRepository
 import com.wahidabd.animein.domain.anime.AnimeInteractor
 import com.wahidabd.animein.domain.anime.AnimeUseCase
+import com.wahidabd.animein.domain.home.HomeInteractor
+import com.wahidabd.animein.domain.home.HomeUseCase
 import com.wahidabd.animein.domain.player.PlayerInteractor
 import com.wahidabd.animein.domain.player.PlayerUseCase
 import dagger.Module
@@ -34,6 +38,7 @@ object RepositoryModule {
     fun provideAnimeInteractor(repository: AnimeRepository): AnimeUseCase =
         AnimeInteractor(repository)
 
+
     @Singleton
     @Provides
     fun providePlayerDataSource(): PlayerRepository = PlayerDataSource()
@@ -43,4 +48,13 @@ object RepositoryModule {
     fun providePlayerInteractor(repository: PlayerRepository): PlayerUseCase =
         PlayerInteractor(repository)
 
+
+    @Singleton
+    @Provides
+    fun provideHomeDataSource(): HomeRepository = HomeDataSource()
+
+    @Singleton
+    @Provides
+    fun provideHomeInteractor(repository: HomeRepository): HomeUseCase =
+        HomeInteractor(repository)
 }

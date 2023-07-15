@@ -1,4 +1,4 @@
-package com.wahidabd.animein.ui.screen.player
+package com.wahidabd.animein.screen.player
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

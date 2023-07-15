@@ -14,13 +14,13 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
+import javax.inject.Singleton
 
 
 /**
  * Created by Wahid on 7/9/2023.
  * Github github.com/wahidabd.
  */
-
 
 class AnimeDataSource : AnimeRepository {
 

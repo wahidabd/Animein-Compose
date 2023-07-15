@@ -1,4 +1,4 @@
-package com.wahidabd.animein.ui.screen
+package com.wahidabd.animein.screen
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -15,11 +15,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.rememberNavHostEngine
+import com.wahidabd.animein.screen.destinations.BookmarkScreenDestination
+import com.wahidabd.animein.screen.destinations.HistoryScreenDestination
+import com.wahidabd.animein.screen.destinations.HomeScreenDestination
+import com.wahidabd.animein.screen.destinations.MoreScreenDestination
 import com.wahidabd.animein.ui.components.bottomNavigation.BottomNavigationBar
-import com.wahidabd.animein.ui.screen.destinations.BookmarkScreenDestination
-import com.wahidabd.animein.ui.screen.destinations.HistoryScreenDestination
-import com.wahidabd.animein.ui.screen.destinations.HomeScreenDestination
-import com.wahidabd.animein.ui.screen.destinations.MoreScreenDestination
 import com.wahidabd.animein.ui.theme.AnimeinTheme
 import dagger.hilt.android.AndroidEntryPoint
 
