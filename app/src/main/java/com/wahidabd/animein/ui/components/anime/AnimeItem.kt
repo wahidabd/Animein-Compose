@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -56,7 +57,7 @@ fun AnimeItem(
             .padding(all = 4.dp)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = null
+                indication = rememberRipple(color = Color.LightGray)
             ) {
                 onClick()
             }
@@ -103,7 +104,6 @@ fun AnimeItem(
 
             TextRectangleOrange(
                 text = data?.episode.toString(),
-                star = !data?.episode.toString().contains("/"),
                 modifier = Modifier
                     .padding(4.dp)
             )

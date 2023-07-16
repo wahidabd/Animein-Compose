@@ -16,10 +16,10 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.rememberNavHostEngine
 import com.wahidabd.animein.screen.destinations.BookmarkScreenDestination
-import com.wahidabd.animein.screen.destinations.HistoryScreenDestination
 import com.wahidabd.animein.screen.destinations.HomeScreenDestination
 import com.wahidabd.animein.screen.destinations.MoreScreenDestination
-import com.wahidabd.animein.ui.components.bottomNavigation.BottomNavigationBar
+import com.wahidabd.animein.screen.destinations.ScheduleScreenDestination
+import com.wahidabd.animein.ui.components.navigation.BottomNavigationBar
 import com.wahidabd.animein.ui.theme.AnimeinTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,8 +45,8 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         showBottomBar = route in listOf(
                             HomeScreenDestination.route,
+                            ScheduleScreenDestination.route,
                             BookmarkScreenDestination.route,
-                            HistoryScreenDestination.route,
                             MoreScreenDestination.route
                         )
                     ) { paddingValues ->

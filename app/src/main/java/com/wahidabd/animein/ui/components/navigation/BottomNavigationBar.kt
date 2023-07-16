@@ -1,4 +1,4 @@
-package com.wahidabd.animein.ui.components.bottomNavigation
+package com.wahidabd.animein.ui.components.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.BottomNavigation
@@ -17,7 +17,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.wahidabd.animein.ui.theme.ColorDarkPurple
-import com.wahidabd.animein.ui.theme.ColorDarkBlue
 import com.wahidabd.animein.ui.theme.ColorPrimary
 
 
@@ -34,8 +33,8 @@ fun BottomNavigationBar(
     showBottomBar: Boolean = true,
     items: List<BottomNavItem> = listOf(
         BottomNavItem.Home,
+        BottomNavItem.Schedule,
         BottomNavItem.Bookmark,
-        BottomNavItem.History,
         BottomNavItem.More,
     ),
     content: @Composable (paddingValues: PaddingValues) -> Unit

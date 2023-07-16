@@ -65,6 +65,7 @@ class AnimePagingSource(private val endpoint: String? = emptyString()) :
                 .attr("data-setbg")
             val episode = events.eq(i)
                 .select("a > div.product__item__pic > div.ep > span").text()
+                .replace("Loading... ", "")
             val type = events.eq(i).select("div.product__item__text > ul > a")
                 .first()?.select("li")?.text()
             val resolution = events.eq(i).select("div.product__item__text > ul > a")

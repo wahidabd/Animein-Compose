@@ -1,11 +1,11 @@
-package com.wahidabd.animein.ui.components.bottomNavigation
+package com.wahidabd.animein.ui.components.navigation
 
 import com.wahidabd.animein.R
 import com.wahidabd.animein.screen.destinations.BookmarkScreenDestination
 import com.wahidabd.animein.screen.destinations.Destination
-import com.wahidabd.animein.screen.destinations.HistoryScreenDestination
 import com.wahidabd.animein.screen.destinations.HomeScreenDestination
 import com.wahidabd.animein.screen.destinations.MoreScreenDestination
+import com.wahidabd.animein.screen.destinations.ScheduleScreenDestination
 
 
 /**
@@ -22,17 +22,18 @@ sealed class BottomNavItem(val title: String, val icon: Int, val destination: De
         destination = HomeScreenDestination
     )
 
+    object Schedule : BottomNavItem(
+        title = "Schedule",
+        icon = R.drawable.ic_schedule,
+        destination = ScheduleScreenDestination
+    )
+
     object Bookmark : BottomNavItem(
         title = "Bookmark",
         icon = R.drawable.ic_bookmark,
         destination = BookmarkScreenDestination
     )
 
-    object History : BottomNavItem(
-        title = "History",
-        icon = R.drawable.ic_history,
-        destination = HistoryScreenDestination
-    )
 
     object More : BottomNavItem(
         title = "More",

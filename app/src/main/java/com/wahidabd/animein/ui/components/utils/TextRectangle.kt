@@ -34,7 +34,6 @@ import com.wahidabd.animein.ui.theme.Shapes
 @Composable
 fun TextRectangleOrange(
     text: String,
-    star: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -47,7 +46,7 @@ fun TextRectangleOrange(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (star) {
+            if (!text.contains("Ep")) {
                 Icon(
                     imageVector = Icons.Default.Star,
                     contentDescription = null,
@@ -91,7 +90,7 @@ fun TextRectangleDarkGray(
 @Composable
 fun TextRectangleOrangePreview() {
     Column {
-        TextRectangleOrange(text = "Ep 15 / 26", true)
+        TextRectangleOrange(text = "Ep 15 / 26")
         Row {
             TextRectangleDarkGray(text = "TV")
             TextRectangleDarkGray(text = "HD")
