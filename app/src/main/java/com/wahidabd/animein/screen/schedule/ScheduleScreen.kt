@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.ScrollableTabRow
@@ -110,6 +112,7 @@ fun ScheduleScreen(
                 verticalAlignment = Alignment.Top,
                 userScrollEnabled = true
             ) {
+                val state: LazyGridState = rememberLazyGridState()
                 val animePaging = viewModel.anime.value.collectAsLazyPagingItems()
 
                 when (animePaging.loadState.refresh) {
@@ -119,6 +122,7 @@ fun ScheduleScreen(
 
                     is LoadState.NotLoading -> {
                         LazyVerticalGrid(
+                            state = state,
                             columns = GridCells.Fixed(2),
                             verticalArrangement = Arrangement.spacedBy(12.dp),
                             horizontalArrangement = Arrangement.spacedBy(10.dp),
