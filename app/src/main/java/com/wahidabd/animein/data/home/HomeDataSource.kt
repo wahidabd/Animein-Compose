@@ -1,6 +1,7 @@
 package com.wahidabd.animein.data.home
 
 import com.wahidabd.animein.domain.anime.model.Anime
+import com.wahidabd.animein.domain.anime.model.Carousel
 import com.wahidabd.animein.utils.Constant.BASE_URL
 import com.wahidabd.library.data.Resource
 import kotlinx.coroutines.Dispatchers
@@ -20,23 +21,58 @@ import java.util.concurrent.TimeoutException
 
 class HomeDataSource : HomeRepository {
 
-    override suspend fun popular(): Flow<Resource<List<Anime>>> = flow {
+    override suspend fun movie(): Flow<Resource<List<Anime>>> = flow {
         val jsoup = Jsoup.connect(BASE_URL).get()
-        val events = jsoup.select("div.listupd > article")
+        val events = jsoup.select("div.trending__product")[2]
+            .select("div.row")[1].select("div.product__item")
         emit(parseItem(events))
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun newUpdate(): Flow<Resource<List<Anime>>> = flow {
+    override suspend fun ongoing(): Flow<Resource<List<Anime>>> = flow {
         val jsoup = Jsoup.connect(BASE_URL).get()
-        val events = jsoup.select("div.listupd > div.excstf > article")
+        val events = jsoup.select("div.trending__product")[0]
+                .select("div.row")[1].select("div.product__item")
         emit(parseItem(events))
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun newAdded(): Flow<Resource<List<Anime>>> = flow {
-        val jsoup = Jsoup.connect("${BASE_URL}advanced-search/?status=&order=added").get()
-        val events = jsoup.select("div.listupd > article")
+    override suspend fun finished(): Flow<Resource<List<Anime>>> = flow {
+        val jsoup = Jsoup.connect(BASE_URL).get()
+        val events = jsoup.select("div.trending__product")[1]
+                .select("div.row")[1].select("div.product__item")
         emit(parseItem(events))
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun carousel(): Flow<Resource<List<Carousel>>> = flow {
+        val jsoup = Jsoup.connect(BASE_URL).get()
+        val events = jsoup.select("div.hero__slider > div.hero__items")
+        emit(parseCarousel(events))
+    }.flowOn(Dispatchers.IO)
+
+
+    private fun parseCarousel(el: Elements): Resource<List<Carousel>> {
+        val result = mutableListOf<Carousel>()
+
+        return try {
+            val size = el.size
+
+            for (i in 0 until size) {
+                val poster = el.eq(i).attr("data-setbg")
+                val title = el.eq(i).select("div.row > div.col-lg-6 > div.hero__text > h2").text()
+                val slug = el.eq(i).select("div.row > div.col-lg-6 > div.hero__text > a").last()
+                    ?.attr("href")
+
+                val carousel = Carousel(slug = slug, title = title, image = poster)
+                result.add(carousel)
+            }
+            if (result.isEmpty()) Resource.empty()
+            else Resource.success(result)
+        } catch (e: Exception) {
+            when (e) {
+                is TimeoutException -> Resource.fail(e.message.toString())
+                else -> Resource.fail(e.message)
+            }
+        }
+    }
 
     private fun parseItem(el: Elements): Resource<List<Anime>> {
         val result = mutableListOf<Anime>()
@@ -44,22 +80,23 @@ class HomeDataSource : HomeRepository {
         return try {
             val size = el.size
             for (i in 0 until size) {
-                val slug = el.eq(i).select("div.bsx > a").attr("href")
-                val title = el.eq(i).select("div.bsx > a").attr("title")
-                val poster = el.eq(i).select("div.bsx > a > div.limit > img").attr("src")
-                    .replace("-200x300", "")
-                val type = el.eq(i).select("div.bsx > a > div.limit > div.typez").text()
-                val rating =
-                    el.eq(i).select("div.bsx > a > div.rt > div.rating > div.numscore").text()
-                val episode = el.eq(i).select("div.bsx > a > div.tt > span.epsx").text()
+                val slug = el.eq(i).select("a").attr("href")
+                val poster = el.eq(i).select("a > div.product__item__pic")
+                    .attr("data-setbg")
+                val title = el.eq(i).select("div.product__item__text > h5 > a").text()
+                val type = el.eq(i).select("div.product__item__text > ul > a")
+                    .first()?.select("li")?.text()
+                val resolution = el.eq(i).select("div.product__item__text > ul > a")
+                    .last()?.select("li")?.text()
+                val episode = el.eq(i).select("a > div.product__item__pic > div.ep > span").text()
 
                 val anime = Anime(
                     slug = slug,
                     title = title,
                     poster = poster,
                     type = type,
-                    rating = rating,
-                    episode = episode
+                    episode = episode,
+                    resolution = resolution
                 )
                 result.add(anime)
             }

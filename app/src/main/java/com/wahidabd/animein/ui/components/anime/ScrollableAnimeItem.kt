@@ -1,4 +1,4 @@
-package com.wahidabd.animein.ui.components.home
+package com.wahidabd.animein.ui.components.anime
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

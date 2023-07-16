@@ -14,12 +14,9 @@ data class Carousel(
     val slug: String? = emptyString(),
     val title: String? = emptyString(),
     val image: String? = emptyString(),
-    val type: String? = emptyString(),
-    val rating: String? = emptyString(),
-    val episode: String? = emptyString()
 )
 
 fun CarouselResponse.toDomain(): Carousel =
     Carousel(
-        slug, title, image, type, rating, episode
+        slug, title, image
     )

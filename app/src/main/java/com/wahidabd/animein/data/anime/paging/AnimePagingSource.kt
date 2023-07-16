@@ -4,8 +4,10 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import coil.network.HttpException
 import com.wahidabd.animein.data.anime.model.AnimeResponse
+import com.wahidabd.animein.domain.anime.model.Anime
 import com.wahidabd.animein.utils.Constant
 import com.wahidabd.library.utils.common.emptyString
+import com.wahidabd.library.utils.extensions.debug
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
@@ -20,17 +22,17 @@ import java.io.IOException
 
 
 class AnimePagingSource(private val endpoint: String? = emptyString()) :
-    PagingSource<Int, AnimeResponse>() {
+    PagingSource<Int, Anime>() {
 
-    override fun getRefreshKey(state: PagingState<Int, AnimeResponse>): Int? =
+    override fun getRefreshKey(state: PagingState<Int, Anime>): Int? =
         state.anchorPosition
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AnimeResponse> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Anime> {
         return try {
             val position = params.key ?: 1
 
             val url = if (position == 1) "${Constant.BASE_URL}$endpoint"
-            else "${Constant.BASE_URL}$endpoint/page/$position/"
+            else "${Constant.BASE_URL}$endpoint&page=$position"
 
             val document = withContext(Dispatchers.IO) { Jsoup.connect(url).get() }
             val items = parseItem(document)
@@ -44,31 +46,37 @@ class AnimePagingSource(private val endpoint: String? = emptyString()) :
             LoadResult.Error(e)
         } catch (e: HttpException) {
             LoadResult.Error(e)
+        }catch (e: Exception){
+            LoadResult.Error(e)
         }
     }
 
 
-    private fun parseItem(document: Document): List<AnimeResponse> {
-        val items = mutableListOf<AnimeResponse>()
+    private fun parseItem(document: Document): List<Anime> {
+        val items = mutableListOf<Anime>()
 
-        val events = document.select("div.listupd > div.excstf > article")
+        val events = document.select("div.product__page__content > div#animeList > div > div.product__item")
         val eventSize = events.size
 
         for (i in 0 until eventSize) {
-            val slug = events.eq(i).select("div.bsx > a").attr("href")
-            val title = events.eq(i).select("div.bsx > a").attr("title")
-            val poster = events.eq(i).select("div.bsx > a > div.limit > img").attr("src")
-            val rating =
-                events.eq(i).select("div.bsx > a > div.tt > div.rt > div.rating > div.numscore")
-                    .text()
-            val episode = events.eq(i).select("div.bsx > a > div.tt > span.epsx").text()
+            val slug = events.eq(i).select("a").attr("href")
+            val title = events.eq(i).select("div.product__item__text > h5 > a").text()
+            val poster = events.eq(i).select("a > div.product__item__pic")
+                .attr("data-setbg")
+            val episode = events.eq(i)
+                .select("a > div.product__item__pic > div.ep > span").text()
+            val type = events.eq(i).select("div.product__item__text > ul > a")
+                .first()?.select("li")?.text()
+            val resolution = events.eq(i).select("div.product__item__text > ul > a")
+                .last()?.select("li")?.text()
 
-            val anime = AnimeResponse(
+            val anime = Anime(
                 slug = slug,
                 title = title,
                 poster = poster,
-                rating = rating,
                 episode = episode,
+                type = type,
+                resolution = resolution
             )
 
             items.add(anime)

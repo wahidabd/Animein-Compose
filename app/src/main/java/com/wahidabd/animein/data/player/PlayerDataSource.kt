@@ -1,9 +1,11 @@
 package com.wahidabd.animein.data.player
 
 import com.wahidabd.animein.data.hxFile
+import com.wahidabd.animein.data.kuramanime
 import com.wahidabd.animein.data.mediafire
 import com.wahidabd.animein.data.parsePlayer
 import com.wahidabd.library.data.Resource
+import com.wahidabd.library.utils.extensions.debug
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -33,8 +35,10 @@ class PlayerDataSource : PlayerRepository {
 
     override suspend fun videoUrl(url: String): Flow<Resource<String>> {
         return flow {
-            emit(mediafire("https://www.mediafire.com/file/fji0gaa1jssobr9/Alqanime_IsekaiVendingMachine_02_360p.mp4/file"))
+//            emit(mediafire("https://www.mediafire.com/file/fji0gaa1jssobr9/Alqanime_IsekaiVendingMachine_02_360p.mp4/file"))
 
+            debug { "VIDEO URL" }
+            emit(kuramanime("https://kuramanime.xyz/anime/50/one-piece/episode/989?activate_stream=1&stream_server=kuramadrive"))
         }.flowOn(Dispatchers.IO)
     }
 

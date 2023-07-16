@@ -7,6 +7,7 @@ import com.wahidabd.animein.data.anime.model.AnimeResponse
 import com.wahidabd.animein.data.anime.model.CarouselResponse
 import com.wahidabd.animein.data.anime.paging.AnimePagingSource
 import com.wahidabd.animein.data.parseCarousel
+import com.wahidabd.animein.domain.anime.model.Anime
 import com.wahidabd.library.data.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -24,12 +25,12 @@ import javax.inject.Singleton
 
 class AnimeDataSource : AnimeRepository {
 
-    override suspend fun anime(): Flow<PagingData<AnimeResponse>> =
+    override suspend fun anime(q: String): Flow<PagingData<Anime>> =
         Pager(
             config = PagingConfig(
                 pageSize = 10,
                 enablePlaceholders = false
-            ), pagingSourceFactory = { AnimePagingSource() }
+            ), pagingSourceFactory = { AnimePagingSource(q) }
         ).flow
 
 

@@ -13,12 +13,8 @@ import com.wahidabd.library.utils.common.emptyString
 data class Anime(
     val slug: String? = emptyString(),
     val poster: String? = emptyString(),
-    val rating: String? = emptyString(),
     val title: String? = emptyString(),
     val type: String? = emptyString(),
-    val episode: String? = emptyString()
+    val episode: String? = emptyString(),
+    val resolution: String? = emptyString()
 )
-
-
-fun AnimeResponse.toDomain(): Anime =
-    Anime(slug, poster, rating, title, type, episode)

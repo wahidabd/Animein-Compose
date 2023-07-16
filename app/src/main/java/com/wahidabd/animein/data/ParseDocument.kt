@@ -39,8 +39,6 @@ fun parseCarousel(document: Document): List<CarouselResponse> {
             slug = slug,
             title = title,
             image = poster,
-            type = type,
-            rating = rating
         )
         result.add(carousel)
     }

@@ -15,6 +15,27 @@ import java.util.concurrent.TimeoutException
  * Github github.com/wahidabd.
  */
 
+fun kuramanime(url: String): Resource<String>{
+
+    return try {
+        val jsoup = Jsoup.connect(url).get()
+        val result = jsoup.getElementsByTag("source")
+        val size = result.size
+
+        for (i in 0 until size){
+            debug { "Kuramanime ${result.eq(i)}" }
+        }
+
+        Resource.success("OK")
+    }catch (e: Exception){
+        when (e) {
+            is TimeoutException -> Resource.fail(e.message.toString())
+            else -> Resource.fail("Unknown Error Exception")
+        }
+    }
+
+}
+
 fun mediafire(url: String): Resource<String> {
 
     return try {

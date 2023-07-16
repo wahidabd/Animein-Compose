@@ -3,6 +3,7 @@ package com.wahidabd.animein.screen.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wahidabd.animein.domain.anime.model.Anime
+import com.wahidabd.animein.domain.anime.model.Carousel
 import com.wahidabd.animein.domain.home.HomeUseCase
 import com.wahidabd.library.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,42 +28,55 @@ class HomeViewModel @Inject constructor (private val useCase: HomeUseCase) : Vie
 //    val anime: State<Flow<PagingData<AnimeResponse>>> get() = _anime
 
 
-    private val _popular = MutableStateFlow<Resource<List<Anime>>>(Resource.loading())
-    val popular: StateFlow<Resource<List<Anime>>> get() = _popular
+    private val _movie = MutableStateFlow<Resource<List<Anime>>>(Resource.loading())
+    val movie: StateFlow<Resource<List<Anime>>> get() = _movie
 
 
-    private val _newUpdate = MutableStateFlow<Resource<List<Anime>>>(Resource.loading())
-    val newUpdate: StateFlow<Resource<List<Anime>>> get() = _newUpdate
+    private val _ongoing = MutableStateFlow<Resource<List<Anime>>>(Resource.loading())
+    val ongoing: StateFlow<Resource<List<Anime>>> get() = _ongoing
 
-    private val _newAdded = MutableStateFlow<Resource<List<Anime>>>(Resource.loading())
-    val newAdded: StateFlow<Resource<List<Anime>>> get() = _newAdded
+    private val _finished = MutableStateFlow<Resource<List<Anime>>>(Resource.loading())
+    val finished: StateFlow<Resource<List<Anime>>> get() = _finished
+
+
+    private val _carousel = MutableStateFlow<Resource<List<Carousel>>>(Resource.loading())
+    val carousel: StateFlow<Resource<List<Carousel>>> get() = _carousel
 
     fun initViewModel(){
-        popular()
-        newAdded()
-        newUpdate()
+        movie()
+        finished()
+        ongoing()
+        carousel()
     }
 
-    private fun popular(){
+    fun carousel(){
         viewModelScope.launch {
-            useCase.popular()
-                .onEach { _popular.value = it }
+            useCase.carousel()
+                .onEach { _carousel.value = it }
                 .launchIn(viewModelScope)
         }
     }
 
-    private fun newUpdate(){
+    private fun movie(){
         viewModelScope.launch {
-            useCase.newUpdate()
-                .onEach { _newUpdate.value = it }
+            useCase.movie()
+                .onEach { _movie.value = it }
                 .launchIn(viewModelScope)
         }
     }
 
-    private fun newAdded(){
+    private fun ongoing(){
         viewModelScope.launch {
-            useCase.newAdded()
-                .onEach { _newAdded.value = it }
+            useCase.ongoing()
+                .onEach { _ongoing.value = it }
+                .launchIn(viewModelScope)
+        }
+    }
+
+    private fun finished(){
+        viewModelScope.launch {
+            useCase.finished()
+                .onEach { _finished.value = it }
                 .launchIn(viewModelScope)
         }
     }

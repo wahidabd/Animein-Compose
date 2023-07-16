@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +17,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -34,13 +32,17 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import com.wahidabd.animein.screen.destinations.AnimeScreenDestination
-import com.wahidabd.animein.ui.components.home.ProfileSearch
-import com.wahidabd.animein.ui.components.home.ScrollableAnimeItem
+import com.wahidabd.animein.screen.destinations.SearchScreenDestination
+import com.wahidabd.animein.ui.components.anime.CarouselHome
+import com.wahidabd.animein.ui.components.anime.ProfileSearch
+import com.wahidabd.animein.ui.components.anime.ScrollableAnimeItem
+import com.wahidabd.animein.ui.components.lottie.LottieEmpty
 import com.wahidabd.animein.ui.components.lottie.LottieError
 import com.wahidabd.animein.ui.components.lottie.LottieLoading
-import com.wahidabd.animein.ui.theme.ColorBlue
 import com.wahidabd.animein.ui.theme.ColorPrimary
 import com.wahidabd.animein.utils.collectStateFlow
+import com.wahidabd.animein.utils.enums.AnimeType
+import com.wahidabd.animein.utils.navArgs.AnimePagingArgs
 
 /**
  * Created by Wahid on 7/9/2023.
@@ -51,8 +53,9 @@ import com.wahidabd.animein.utils.collectStateFlow
 @Composable
 fun HomeScreen(
     navigator: DestinationsNavigator?,
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -72,53 +75,61 @@ fun NestedScrollItemHome(
     LaunchedEffect(Unit) {
         viewModel.initViewModel()
     }
-    val listState: LazyListState = rememberLazyListState()
 
-    viewModel.newAdded.collectStateFlow(
+    val listState: LazyListState = rememberLazyListState()
+    viewModel.carousel.collectStateFlow(
         onLoading = {
             LottieLoading()
         },
-        onFailure = { _, _ ->
-            LottieError()
+        onFailure = { _, message ->
+            LottieError(message)
+        },
+        onEmpty = {
+            LottieEmpty()
         }
-    ) {
+    ) { carousel ->
         LazyColumn(
             state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
         ) {
-            item { TitleSection(text = "Popular") }
-            item { ScrollableAnimeItem(navigator = navigator, items = viewModel.popular) }
+            item { TitleSection(AnimeType.SPOTLIGHT) }
+            item { CarouselHome(carousel = carousel) }
 
-            item { TitleSection(text = "New Update"){navigator.navigate(AnimeScreenDestination())} }
-            item { ScrollableAnimeItem(navigator = navigator, items = viewModel.newUpdate) }
+            item { TitleSection(AnimeType.ONGOING, navigator)}
+            item { ScrollableAnimeItem(navigator = navigator, items = viewModel.ongoing) }
 
-            item { TitleSection(text = "New Added"){ }}
-            item { ScrollableAnimeItem(navigator = navigator, items = viewModel.newAdded) }
+            item { TitleSection(AnimeType.MOVIE, navigator)}
+            item { ScrollableAnimeItem(navigator = navigator, items = viewModel.movie) }
+
+
+            item { TitleSection(AnimeType.FINISHED, navigator) }
+            item { ScrollableAnimeItem(navigator = navigator, items = viewModel.finished) }
+
         }
     }
 
 }
 
 @Composable
-fun TitleSection(text: String, onclick: (() -> Unit)? = null) {
+fun TitleSection(type: AnimeType, navigator: DestinationsNavigator? = EmptyDestinationsNavigator) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp)
             .clickable(
-                enabled = onclick != null,
+                enabled = type.query?.isNotEmpty() == true,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = Color.LightGray)
             ) {
-                onclick
+                navigator?.navigate(AnimeScreenDestination(type = type))
             },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = text,
+            text = type.title,
             color = Color.White,
             style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier
@@ -126,7 +137,7 @@ fun TitleSection(text: String, onclick: (() -> Unit)? = null) {
                 .padding(top = 4.dp, bottom = 4.dp)
         )
 
-        if (onclick != null) {
+        if (type.query?.isNotEmpty() == true) {
             Icon(
                 imageVector = Icons.Default.KeyboardArrowRight,
                 tint = Color.White,

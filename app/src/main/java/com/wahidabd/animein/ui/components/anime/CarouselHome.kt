@@ -1,26 +1,20 @@
-package com.wahidabd.animein.ui.components.home
+package com.wahidabd.animein.ui.components.anime
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +25,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -39,9 +35,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import com.skydoves.landscapist.CircularReveal
+import com.skydoves.landscapist.ShimmerParams
+import com.skydoves.landscapist.coil.CoilImage
 import com.wahidabd.animein.R
 import com.wahidabd.animein.domain.anime.model.Carousel
+import com.wahidabd.animein.ui.theme.ColorDarkGray
+import com.wahidabd.animein.ui.theme.ColorPrimary
 import com.wahidabd.animein.ui.theme.ColorTranslucentBlack
 import com.wahidabd.animein.utils.Constant
 import com.wahidabd.animein.utils.carouselTransition
@@ -85,9 +85,9 @@ fun CarouselHome(
         Box {
             HorizontalPager(
                 state = pagerState,
-                contentPadding = PaddingValues(
-                    horizontal = dimensionResource(id = R.dimen.normal_padding)
-                ),
+//                contentPadding = PaddingValues(
+//                    horizontal = dimensionResource(id = R.dimen.normal_padding)
+//                ),
                 pageSpacing = dimensionResource(id = R.dimen.normal_padding)
             ) { page ->
                 val item = carousel[page]
@@ -106,70 +106,64 @@ fun CarouselHome(
 @Composable
 fun CarouselItem(item: Carousel) {
 
-    val gradient = Brush.verticalGradient(listOf(Color.Transparent, ColorTranslucentBlack))
+    val gradient =
+        Brush.verticalGradient(listOf(Color.Transparent, ColorTranslucentBlack))
 
-    Box(modifier = Modifier.background(gradient)) {
-        AsyncImage(
-            model = item.image,
-            contentDescription = null,
-            placeholder = painterResource(id = R.drawable.ic_load_placeholder),
-            error = painterResource(id = R.drawable.ic_load_error),
+    Box {
+        CoilImage(
+            imageModel = item.image,
+            shimmerParams = ShimmerParams(
+                baseColor = ColorPrimary,
+                highlightColor = ColorDarkGray,
+                durationMillis = 500,
+                dropOff = 0.65F,
+                tilt = 20F
+            ),
+            failure = {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .border(
+                            width = 1.dp,
+                            color = Color.LightGray,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_load_error),
+                        contentDescription = "no image"
+                    )
+                }
+            },
+            previewPlaceholder = R.drawable.ic_load_placeholder,
             contentScale = ContentScale.Crop,
+            circularReveal = CircularReveal(duration = 700),
             modifier = Modifier
+                .drawWithCache {
+                    onDrawWithContent {
+                        drawContent()
+                        drawRect(gradient, blendMode = BlendMode.Multiply)
+                    }
+                }
                 .height(dimensionResource(id = R.dimen.home_grid_card_height))
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            contentDescription = item.title
         )
 
-        Column(modifier = Modifier.align(Alignment.BottomStart)) {
-
-            Text(
-                text = item.title.toString(),
-                style = MaterialTheme.typography.headlineMedium,
-                color = Color.White,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = dimensionResource(id = R.dimen.normal_padding),
-                    )
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 12.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_play_circle),
-                    tint = Color.White,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp)
+        Text(
+            text = item.title.toString(),
+            style = MaterialTheme.typography.headlineMedium,
+            color = Color.White,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .fillMaxWidth()
+                .padding(
+                    horizontal = dimensionResource(id = R.dimen.normal_padding),
+                    vertical = 12.dp
                 )
-                Text(
-                    text = item.type.toString(),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.White,
-                )
-
-                Spacer(modifier = Modifier.width(6.dp))
-
-                Icon(
-                    imageVector = Icons.Default.Star,
-                    tint = Color.White,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp)
-                )
-                Text(
-                    text = item.rating.toString(),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.White,
-                )
-            }
-        }
+        )
     }
 }
 
@@ -181,10 +175,7 @@ fun CarouselHomePreview() {
             Carousel(
                 slug = "",
                 image = "",
-                title = "One Piece",
-                type = "Anime",
-                rating = "6.7",
-                episode = "189"
+                title = "One Piece"
             )
         )
     )

@@ -1,12 +1,12 @@
-package com.wahidabd.animein.ui.components.home
+package com.wahidabd.animein.ui.components.anime
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,8 +30,9 @@ import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.ShimmerParams
 import com.skydoves.landscapist.coil.CoilImage
 import com.wahidabd.animein.R
-import com.wahidabd.animein.data.anime.model.AnimeResponse
 import com.wahidabd.animein.domain.anime.model.Anime
+import com.wahidabd.animein.ui.components.utils.TextRectangleDarkGray
+import com.wahidabd.animein.ui.components.utils.TextRectangleOrange
 import com.wahidabd.animein.ui.theme.ColorDarkGray
 import com.wahidabd.animein.ui.theme.ColorPrimary
 import com.wahidabd.animein.ui.theme.Shapes
@@ -99,6 +100,23 @@ fun AnimeItem(
                 modifier = Modifier.clip(RoundedCornerShape(8.dp)),
                 contentDescription = data?.title
             )
+
+            TextRectangleOrange(
+                text = data?.episode.toString(),
+                star = !data?.episode.toString().contains("/"),
+                modifier = Modifier
+                    .padding(4.dp)
+            )
+
+            Row(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(4.dp)
+            ) {
+                TextRectangleDarkGray(text = data?.type.toString())
+                Spacer(modifier = Modifier.width(4.dp))
+                TextRectangleDarkGray(text = data?.resolution.toString())
+            }
         }
 
         Spacer(modifier = Modifier.height(4.dp))
@@ -120,10 +138,10 @@ fun AnimeItemPreview() {
         Anime(
             "",
             "",
-            "8.9",
             "One Piece",
             "Movie",
             "1/12",
+            "8.9",
         ),
         onClick = {}
     )

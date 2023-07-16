@@ -7,7 +7,9 @@ package com.wahidabd.animein.utils.enums
  */
 
 
-enum class AnimeType (title: String, query: String){
-    NEW_UPDATE("New Update", ""),
-    NEW_ADDED("New Added", "")
+enum class AnimeType (val title: String, val query: String? = null){
+    ONGOING("Ongoing", "anime/ongoing?order_by=updated"),
+    FINISHED("Finished", "anime/finished?order_by=updated"),
+    MOVIE("Movie", "anime/movie?order_by=updated"),
+    SPOTLIGHT("Spotlight")
 }

@@ -1,6 +1,7 @@
 package com.wahidabd.animein.data.home
 
 import com.wahidabd.animein.domain.anime.model.Anime
+import com.wahidabd.animein.domain.anime.model.Carousel
 import com.wahidabd.library.data.Resource
 import kotlinx.coroutines.flow.Flow
 
@@ -12,8 +13,9 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface HomeRepository {
-    suspend fun popular(): Flow<Resource<List<Anime>>>
-    suspend fun newUpdate(): Flow<Resource<List<Anime>>>
-    suspend fun newAdded(): Flow<Resource<List<Anime>>>
+    suspend fun movie(): Flow<Resource<List<Anime>>>
+    suspend fun ongoing(): Flow<Resource<List<Anime>>>
+    suspend fun finished(): Flow<Resource<List<Anime>>>
+    suspend fun carousel(): Flow<Resource<List<Carousel>>>
 
 }

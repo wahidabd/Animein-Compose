@@ -1,11 +1,15 @@
 package com.wahidabd.animein.ui.components.lottie
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.wahidabd.animein.R
 
@@ -47,11 +51,16 @@ fun LottieSearch() {
 }
 
 @Composable
-fun LottieError() {
+fun LottieError(error: String?) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
     ){
-        LottieLoader(lottieFile = R.raw.error, modifier = Modifier.size(250.dp))
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            LottieLoader(lottieFile = R.raw.error, modifier = Modifier.size(250.dp))
+            Text(text = error.toString(), style = MaterialTheme.typography.titleMedium, color = Color.White)
+        }
     }
 }
