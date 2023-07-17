@@ -44,8 +44,7 @@ fun ScrollableAnimeItem(
                     AnimeItem(data = item, onClick = {
                         navigator.navigate(
                             AnimeDetailScreenDestination(
-                                slug = item.slug.toString(),
-                                title = item.title.toString()
+                                slug = item.slug.toString()
                             )
                         )
                     })

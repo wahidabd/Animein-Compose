@@ -6,10 +6,12 @@ import androidx.paging.PagingData
 import com.wahidabd.animein.data.anime.model.AnimeResponse
 import com.wahidabd.animein.data.anime.model.CarouselResponse
 import com.wahidabd.animein.data.anime.paging.AnimePagingSource
+import com.wahidabd.animein.data.anime.paging.EpisodePagingSource
 import com.wahidabd.animein.data.parseAnimeDetail
 import com.wahidabd.animein.data.parseCarousel
 import com.wahidabd.animein.domain.anime.model.Anime
 import com.wahidabd.animein.domain.anime.model.AnimeDetail
+import com.wahidabd.animein.domain.anime.model.Episode
 import com.wahidabd.animein.utils.Constant.BASE_URL
 import com.wahidabd.animein.utils.Constant.USER_AGENT
 import com.wahidabd.library.data.Resource
@@ -42,6 +44,14 @@ class AnimeDataSource : AnimeRepository {
         val jsoup = Jsoup.connect("${BASE_URL}anime/$slug").get()
         emit(parseAnimeDetail(jsoup))
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun episode(slug: String): Flow<PagingData<Episode>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = 14,
+                enablePlaceholders = false
+            ), pagingSourceFactory = {EpisodePagingSource(slug)}
+        ).flow
 
 
     override suspend fun carousel(): Flow<Resource<List<CarouselResponse>>> =

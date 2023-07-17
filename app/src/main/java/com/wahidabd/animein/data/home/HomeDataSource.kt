@@ -23,30 +23,59 @@ import java.util.concurrent.TimeoutException
 class HomeDataSource : HomeRepository {
 
     override suspend fun movie(): Flow<Resource<List<Anime>>> = flow {
-        val jsoup = Jsoup.connect(BASE_URL).get()
-        val events = jsoup.select("div.trending__product")[2]
-            .select("div.row")[1].select("div.product__item")
-        emit(parseItem(events))
+        try {
+            val jsoup = Jsoup.connect(BASE_URL).get()
+            val events = jsoup.select("div.trending__product")[2]
+                .select("div.row")[1].select("div.product__item")
+            emit(parseItem(events))
+        }catch (e: Exception){
+            when (e) {
+                is TimeoutException -> emit(Resource.fail(e.message.toString()))
+                else -> emit(Resource.fail(e.message))
+            }
+        }
     }.flowOn(Dispatchers.IO)
 
     override suspend fun ongoing(): Flow<Resource<List<Anime>>> = flow {
-        val jsoup = Jsoup.connect(BASE_URL).get()
-        val events = jsoup.select("div.trending__product")[0]
-                .select("div.row")[1].select("div.product__item")
-        emit(parseItem(events))
+        try {
+            val jsoup = Jsoup.connect(BASE_URL).get()
+            val events = jsoup.select("div.trending__product").eq(0)
+                .select("div.row").eq(1).select("div.product__item")
+            emit(parseItem(events))
+        }catch (e: Exception){
+            when (e) {
+                is TimeoutException -> emit(Resource.fail(e.message.toString()))
+                else -> emit(Resource.fail(e.message))
+            }
+        }
     }.flowOn(Dispatchers.IO)
 
     override suspend fun finished(): Flow<Resource<List<Anime>>> = flow {
-        val jsoup = Jsoup.connect(BASE_URL).get()
-        val events = jsoup.select("div.trending__product")[1]
+        try {
+            val jsoup = Jsoup.connect(BASE_URL).get()
+            val events = jsoup.select("div.trending__product")[1]
                 .select("div.row")[1].select("div.product__item")
-        emit(parseItem(events))
+            emit(parseItem(events))
+        }catch (e: Exception){
+            when (e) {
+                is TimeoutException -> emit(Resource.fail(e.message.toString()))
+                else -> emit(Resource.fail(e.message))
+            }
+        }
     }.flowOn(Dispatchers.IO)
 
     override suspend fun carousel(): Flow<Resource<List<Carousel>>> = flow {
-        val jsoup = Jsoup.connect(BASE_URL).get()
-        val events = jsoup.select("div.hero__slider > div.hero__items")
-        emit(parseCarousel(events))
+        try {
+            val jsoup = Jsoup.connect(BASE_URL).get()
+            val events = jsoup.select("div.hero__slider > div.hero__items")
+            emit(parseCarousel(events))
+        }catch (e: Exception){
+            when (e) {
+                is TimeoutException -> emit(Resource.fail(e.message.toString()))
+                else -> emit(Resource.fail(e.message))
+            }
+        }
+
     }.flowOn(Dispatchers.IO)
 
 

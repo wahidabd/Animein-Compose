@@ -2,9 +2,11 @@ package com.wahidabd.animein.data
 
 import com.wahidabd.animein.data.anime.model.CarouselResponse
 import com.wahidabd.animein.domain.anime.model.AnimeDetail
+import com.wahidabd.animein.domain.anime.model.Episode
 import com.wahidabd.animein.domain.anime.model.Genre
 import com.wahidabd.animein.utils.replaceSynopsis
 import com.wahidabd.library.data.Resource
+import com.wahidabd.library.utils.common.emptyString
 import com.wahidabd.library.utils.extensions.debug
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -73,9 +75,12 @@ fun parseAnimeDetail(document: Document): Resource<AnimeDetail> {
     val left = widget.select(" div.row > div:eq(0) > ul > li")
     val right = widget.select("div.row > div:eq(1) > ul > li")
 
+    testEpisode(document)
+
     return try {
         val poster = document.getElementsByClass("anime__details__pic").attr("data-setbg")
-        val title = document.getElementsByClass("anime__details__title").select("h3").text() //bottomElement.select("div.anime__details__title > h3").text()
+        val title = document.getElementsByClass("anime__details__title").select("h3")
+            .text() //bottomElement.select("div.anime__details__title > h3").text()
         val type = left.eq(0).select("a").text()
         val totalEpisode = left.eq(1).select("a").text()
         val release = left.eq(3).select("a").text()
@@ -84,6 +89,10 @@ fun parseAnimeDetail(document: Document): Resource<AnimeDetail> {
         val rating = right.eq(5).select("a").text().replace(" / 10.00", "")
         val genres = parseTextGenres(right.eq(0).select("a"))
         val alternative = document.getElementsByClass("anime__details__title").select("span").text()
+        val episode = parseLastEpisode(
+            document.getElementById("episodeLists")?.attr("data-content").toString()
+        )
+
 
         val result = AnimeDetail(
             poster = poster,
@@ -96,11 +105,12 @@ fun parseAnimeDetail(document: Document): Resource<AnimeDetail> {
             releaseEndDate = release,
             rating = rating,
             alternative = alternative,
-            genres = genres
+            genres = genres,
+            episode = episode
         )
 
         Resource.success(result)
-    }catch (e: Exception){
+    } catch (e: Exception) {
         when (e) {
             is TimeoutException -> Resource.fail(e.message.toString())
             else -> Resource.fail(e.message)
@@ -108,11 +118,31 @@ fun parseAnimeDetail(document: Document): Resource<AnimeDetail> {
     }
 }
 
-private fun parseTextGenres(el: Elements): List<Genre>{
+private fun parseLastEpisode(html: String): Episode {
+
+    var slug = emptyString()
+    var name = emptyString()
+
+    val jsoup = Jsoup.parse(html)
+    val el = jsoup.select("a")
+    val size = el.size
+
+    for (i in 0 until size) {
+        if (el.eq(i).text().contains("(Terbaru)")) {
+            slug = el.eq(i).attr("href")
+            name = el.eq(i).text().replace("Ep", "Episode")
+        }
+    }
+
+    debug { "$slug -> $name" }
+    return Episode(slug, name)
+}
+
+private fun parseTextGenres(el: Elements): List<Genre> {
     val result = mutableListOf<Genre>()
 
     val size = el.size
-    for (i in 0 until size){
+    for (i in 0 until size) {
         val name = el.eq(i).text().replace(",", "")
         val slug = el.eq(i).attr("href")
 
@@ -120,6 +150,20 @@ private fun parseTextGenres(el: Elements): List<Genre>{
         result.add(genre)
     }
     return result
+}
+
+private fun testEpisode(document: Document) {
+    val parseToHtml = document.getElementById("episodeLists")?.attr("data-content")
+
+    val jsoup = Jsoup.parse(parseToHtml.toString())
+    val el = jsoup.select("a")
+    val size = el.size
+
+    for (i in 0 until size) {
+        if (!el.eq(i).text().contains("(")) {
+            debug { el.eq(i).text() }
+        }
+    }
 }
 
 

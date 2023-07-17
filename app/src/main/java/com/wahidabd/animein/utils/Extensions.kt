@@ -67,8 +67,6 @@ fun String.replaceFullSlug() =
     this.replaceAfter("/episode", "")
         .replace("/episode", "")
         .replace("${Constant.BASE_URL}anime/", "")
-        .replaceBefore("/", "")
-        .replace("/", "")
 
 fun String.replaceSynopsis() =
     this.replaceAfter("Catatan:", "")

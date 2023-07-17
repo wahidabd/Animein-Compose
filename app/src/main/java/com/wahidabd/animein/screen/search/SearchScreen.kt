@@ -85,8 +85,7 @@ fun SearchScreen(
                             AnimePagingItem(data = animePaging[index]!!) {
                                 navigator.navigate(
                                     AnimeDetailScreenDestination(
-                                        slug = animePaging[index]?.slug.toString(),
-                                        title = animePaging[index]?.title.toString()
+                                        slug = animePaging[index]?.slug.toString()
                                     )
                                 )
                             }

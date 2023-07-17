@@ -7,6 +7,7 @@ import com.wahidabd.animein.data.anime.model.CarouselResponse
 import com.wahidabd.animein.domain.anime.model.Anime
 import com.wahidabd.animein.domain.anime.model.AnimeDetail
 import com.wahidabd.animein.domain.anime.model.Carousel
+import com.wahidabd.animein.domain.anime.model.Episode
 import com.wahidabd.animein.domain.anime.model.toDomain
 import com.wahidabd.library.data.Resource
 import com.wahidabd.library.utils.coroutine.boundResource.InternetBoundResource
@@ -28,6 +29,10 @@ class AnimeInteractor @Inject constructor(private val repository: AnimeRepositor
 
     override suspend fun detail(slug: String): Flow<Resource<AnimeDetail>> {
         return repository.detail(slug)
+    }
+
+    override suspend fun episode(slug: String): Flow<PagingData<Episode>> {
+        return repository.episode(slug)
     }
 
     override fun carousel(): Flow<Resource<List<Carousel>>> =

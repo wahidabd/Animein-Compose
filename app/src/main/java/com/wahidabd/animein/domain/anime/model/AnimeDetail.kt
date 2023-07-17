@@ -23,5 +23,6 @@ data class AnimeDetail(
     val totalEpisode: String? = emptyString(),
     val synopsis: String? = emptyString(),
     val alternative: String? = emptyString(),
+    val episode: Episode? = null,
     val genres: List<Genre>? = null
 ): Parcelable

@@ -9,6 +9,7 @@ import androidx.paging.cachedIn
 import com.wahidabd.animein.domain.anime.AnimeUseCase
 import com.wahidabd.animein.domain.anime.model.Anime
 import com.wahidabd.animein.domain.anime.model.AnimeDetail
+import com.wahidabd.animein.domain.anime.model.Episode
 import com.wahidabd.library.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -39,6 +40,9 @@ class AnimeViewModel @Inject constructor(
     private val _detail = MutableStateFlow<Resource<AnimeDetail>>(Resource.loading())
     val detail: StateFlow<Resource<AnimeDetail>> get() = _detail
 
+    private val _episode = mutableStateOf<Flow<PagingData<Episode>>>(emptyFlow())
+    val episode: State<Flow<PagingData<Episode>>> get() = _episode
+
 
     fun anime(q: String){
         viewModelScope.launch {
@@ -53,6 +57,14 @@ class AnimeViewModel @Inject constructor(
             useCase.detail(slug)
                 .onEach { _detail.value = it }
                 .launchIn(viewModelScope)
+        }
+    }
+
+    fun episode(slug: String){
+        viewModelScope.launch {
+            _episode.value = useCase.episode(slug)
+                .distinctUntilChanged()
+                .cachedIn(viewModelScope)
         }
     }
 }

@@ -5,6 +5,7 @@ import com.wahidabd.animein.data.anime.model.AnimeResponse
 import com.wahidabd.animein.domain.anime.model.Anime
 import com.wahidabd.animein.domain.anime.model.AnimeDetail
 import com.wahidabd.animein.domain.anime.model.Carousel
+import com.wahidabd.animein.domain.anime.model.Episode
 import com.wahidabd.library.data.Resource
 import kotlinx.coroutines.flow.Flow
 
@@ -18,5 +19,6 @@ import kotlinx.coroutines.flow.Flow
 interface AnimeUseCase {
     suspend fun anime(q: String): Flow<PagingData<Anime>>
     suspend fun detail(slug: String): Flow<Resource<AnimeDetail>>
+    suspend fun episode(slug: String): Flow<PagingData<Episode>>
     fun carousel(): Flow<Resource<List<Carousel>>>
 }
