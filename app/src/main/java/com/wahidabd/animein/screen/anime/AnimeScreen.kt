@@ -30,6 +30,7 @@ import coil.network.HttpException
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
+import com.wahidabd.animein.screen.destinations.AnimeDetailScreenDestination
 import com.wahidabd.animein.ui.components.anime.AnimePagingItem
 import com.wahidabd.animein.ui.components.lottie.LottieError
 import com.wahidabd.animein.ui.components.lottie.LottieLoading
@@ -88,7 +89,14 @@ fun AnimeScreen(
                     contentPadding = PaddingValues(vertical = 12.dp)
                 ) {
                     items(animePaging.itemCount) { index ->
-                        AnimePagingItem(data = animePaging[index]!!) {}
+                        AnimePagingItem(data = animePaging[index]!!) {
+                            navigator.navigate(
+                                AnimeDetailScreenDestination(
+                                    slug = animePaging[index]?.slug.toString(),
+                                    title = animePaging[index]?.title.toString()
+                                )
+                            )
+                        }
                     }
                 }
             }

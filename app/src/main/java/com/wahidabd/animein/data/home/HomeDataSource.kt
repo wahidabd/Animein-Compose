@@ -3,6 +3,7 @@ package com.wahidabd.animein.data.home
 import com.wahidabd.animein.domain.anime.model.Anime
 import com.wahidabd.animein.domain.anime.model.Carousel
 import com.wahidabd.animein.utils.Constant.BASE_URL
+import com.wahidabd.animein.utils.replaceFullSlug
 import com.wahidabd.library.data.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -81,6 +82,7 @@ class HomeDataSource : HomeRepository {
             val size = el.size
             for (i in 0 until size) {
                 val slug = el.eq(i).select("a").attr("href")
+                    .replaceFullSlug()
                 val poster = el.eq(i).select("a > div.product__item__pic")
                     .attr("data-setbg")
                 val title = el.eq(i).select("div.product__item__text > h5 > a").text()

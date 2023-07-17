@@ -61,3 +61,17 @@ fun Modifier.carouselTransition(page: Int, pagerState: PagerState) =
         alpha = transformation
         scaleY = transformation
     }
+
+
+fun String.replaceFullSlug() =
+    this.replaceAfter("/episode", "")
+        .replace("/episode", "")
+        .replace("${Constant.BASE_URL}anime/", "")
+        .replaceBefore("/", "")
+        .replace("/", "")
+
+fun String.replaceSynopsis() =
+    this.replaceAfter("Catatan:", "")
+        .replace("Catatan:", "")
+
+fun String.fullTrim() = trim().replace("\uFEFF", "")

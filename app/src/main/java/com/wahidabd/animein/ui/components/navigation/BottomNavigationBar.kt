@@ -73,14 +73,14 @@ fun BottomNavigationBar(
                             selected = currentItem?.route?.contains(item.destination.route) == true,
                             onClick = {
                                 navController.navigate(item.destination.route){
-//                                    navController.graph.startDestinationRoute?.let { route ->
-//                                        popUpTo(route){
-//                                            saveState = true
-//                                        }
-//                                    }
-                                    popUpTo(navController.graph.findStartDestination().id){
-                                        saveState = true
+                                    navController.graph.startDestinationRoute?.let { route ->
+                                        popUpTo(route){
+                                            saveState = true
+                                        }
                                     }
+//                                    popUpTo(navController.graph.findStartDestination().id){
+//                                        saveState = true
+//                                    }
                                     launchSingleTop = true
                                     restoreState = true
                                 }

@@ -56,7 +56,7 @@ fun AnimeHeader(
             navigator = backOnClick
         )
         Spacer(modifier = Modifier.width(12.dp))
-        if (title != null){
+        if (title != null && color != Color.Transparent){
             Text(
                 text = title,
                 style = MaterialTheme.typography.headlineSmall,

@@ -64,7 +64,7 @@ fun AnimePagingItem(
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = Color.LightGray)
-            ) {},
+            ) {onclick()},
     ) {
         CoilImage(
             imageModel = data.poster,

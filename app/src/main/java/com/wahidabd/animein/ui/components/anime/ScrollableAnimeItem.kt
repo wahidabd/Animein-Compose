@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.wahidabd.animein.domain.anime.model.Anime
+import com.wahidabd.animein.screen.destinations.AnimeDetailScreenDestination
 import com.wahidabd.animein.utils.collectStateFlow
 import com.wahidabd.library.data.Resource
 import kotlinx.coroutines.flow.StateFlow
@@ -40,7 +41,14 @@ fun ScrollableAnimeItem(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 items(anime) { item ->
-                    AnimeItem(data = item) {}
+                    AnimeItem(data = item, onClick = {
+                        navigator.navigate(
+                            AnimeDetailScreenDestination(
+                                slug = item.slug.toString(),
+                                title = item.title.toString()
+                            )
+                        )
+                    })
                 }
             }
         }

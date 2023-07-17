@@ -1,10 +1,15 @@
 package com.wahidabd.animein.data
 
 import com.wahidabd.animein.data.anime.model.CarouselResponse
+import com.wahidabd.animein.domain.anime.model.AnimeDetail
+import com.wahidabd.animein.domain.anime.model.Genre
+import com.wahidabd.animein.utils.replaceSynopsis
 import com.wahidabd.library.data.Resource
 import com.wahidabd.library.utils.extensions.debug
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.jsoup.select.Elements
+import java.util.concurrent.TimeoutException
 
 
 /**
@@ -62,39 +67,59 @@ fun parsePlayer(document: Document): List<String> {
 
 }
 
+fun parseAnimeDetail(document: Document): Resource<AnimeDetail> {
 
-// otakudesu
-//fun getVideoUrl(document: Document): String {
-//    val tag = document.getElementsByTag("script")
-//
-//    for (t in tag){
-//        if (t.data().contains("sources:")){
-//            val subString = t.data().substringAfter("[{'file':'").substringBefore("}]")
-//            debug { subString }
-//            debug { t.data() }
-////            val pattern: Pattern = Pattern.compile("sources: ([^;]*);")
-////            val matcher: Matcher = pattern.matcher(t.data())
-////            if (matcher.find()){
-////                debug { matcher.group() }
-////            }
-////            else{
-////                debug { "Not Found" }
-////            }
-//
-//        }
-//    }
-//
-//    return "OK"
-//}
+    val widget = document.getElementsByClass("anime__details__widget")
+    val left = widget.select(" div.row > div:eq(0) > ul > li")
+    val right = widget.select("div.row > div:eq(1) > ul > li")
 
+    return try {
+        val poster = document.getElementsByClass("anime__details__pic").attr("data-setbg")
+        val title = document.getElementsByClass("anime__details__title").select("h3").text() //bottomElement.select("div.anime__details__title > h3").text()
+        val type = left.eq(0).select("a").text()
+        val totalEpisode = left.eq(1).select("a").text()
+        val release = left.eq(3).select("a").text()
+        val resolution = left.eq(6).select("a").text()
+        val synopsis = document.getElementById("synopsisField")?.text()?.replaceSynopsis()
+        val rating = right.eq(5).select("a").text().replace(" / 10.00", "")
+        val genres = parseTextGenres(right.eq(0).select("a"))
+        val alternative = document.getElementsByClass("anime__details__title").select("span").text()
 
-fun anoboy(url: String): Resource<String> {
-    val jsoup = Jsoup.connect(url).get()
+        val result = AnimeDetail(
+            poster = poster,
+            backdrop = poster,
+            title = title,
+            type = type,
+            resolution = resolution,
+            totalEpisode = totalEpisode,
+            synopsis = synopsis,
+            releaseEndDate = release,
+            rating = rating,
+            alternative = alternative,
+            genres = genres
+        )
 
+        Resource.success(result)
+    }catch (e: Exception){
+        when (e) {
+            is TimeoutException -> Resource.fail(e.message.toString())
+            else -> Resource.fail(e.message)
+        }
+    }
+}
 
+private fun parseTextGenres(el: Elements): List<Genre>{
+    val result = mutableListOf<Genre>()
 
+    val size = el.size
+    for (i in 0 until size){
+        val name = el.eq(i).text().replace(",", "")
+        val slug = el.eq(i).attr("href")
 
-    return Resource.success("OK")
+        val genre = Genre(slug = slug, name = name)
+        result.add(genre)
+    }
+    return result
 }
 
 

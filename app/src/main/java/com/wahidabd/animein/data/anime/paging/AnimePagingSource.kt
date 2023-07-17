@@ -6,6 +6,7 @@ import coil.network.HttpException
 import com.wahidabd.animein.data.anime.model.AnimeResponse
 import com.wahidabd.animein.domain.anime.model.Anime
 import com.wahidabd.animein.utils.Constant
+import com.wahidabd.animein.utils.replaceFullSlug
 import com.wahidabd.library.utils.common.emptyString
 import com.wahidabd.library.utils.extensions.debug
 import kotlinx.coroutines.Dispatchers
@@ -59,7 +60,7 @@ class AnimePagingSource(private val endpoint: String? = emptyString()) :
         val eventSize = events.size
 
         for (i in 0 until eventSize) {
-            val slug = events.eq(i).select("a").attr("href")
+            val slug = events.eq(i).select("a").attr("href").replaceFullSlug()
             val title = events.eq(i).select("div.product__item__text > h5 > a").text()
             val poster = events.eq(i).select("a > div.product__item__pic")
                 .attr("data-setbg")

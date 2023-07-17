@@ -18,10 +18,10 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.wahidabd.animein.screen.destinations.AnimeDetailScreenDestination
 import com.wahidabd.animein.ui.components.anime.AnimePagingItem
 import com.wahidabd.animein.ui.components.lottie.LottieEmpty
 import com.wahidabd.animein.ui.components.lottie.LottieError
-import com.wahidabd.animein.ui.components.lottie.LottieLoading
 import com.wahidabd.animein.ui.components.lottie.LottieSearch
 import com.wahidabd.animein.ui.components.utils.AnimeSearchBar
 import com.wahidabd.animein.ui.theme.ColorPrimary
@@ -82,7 +82,14 @@ fun SearchScreen(
                         contentPadding = PaddingValues(vertical = 12.dp)
                     ) {
                         items(animePaging.itemCount) { index ->
-                            AnimePagingItem(data = animePaging[index]!!) {}
+                            AnimePagingItem(data = animePaging[index]!!) {
+                                navigator.navigate(
+                                    AnimeDetailScreenDestination(
+                                        slug = animePaging[index]?.slug.toString(),
+                                        title = animePaging[index]?.title.toString()
+                                    )
+                                )
+                            }
                         }
                     }
                 }
