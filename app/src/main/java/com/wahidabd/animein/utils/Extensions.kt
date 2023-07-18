@@ -1,16 +1,19 @@
 package com.wahidabd.animein.utils
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import kotlin.math.absoluteValue
 import androidx.compose.ui.util.lerp
 import com.wahidabd.library.data.Resource
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlin.math.absoluteValue
 
 
 /**
@@ -62,6 +65,24 @@ fun Modifier.carouselTransition(page: Int, pagerState: PagerState) =
         scaleY = transformation
     }
 
+
+fun Context.findComponentActivity(): ComponentActivity? {
+    var context = this
+    while (context is ContextWrapper) {
+        if (context is ComponentActivity) return context
+        context = context.baseContext
+    }
+    throw IllegalStateException("no activity")
+}
+
+fun Context.findActivity(): Activity {
+    var context = this
+    while (context is ContextWrapper) {
+        if (context is Activity) return context
+        context = context.baseContext
+    }
+    throw IllegalStateException("no activity")
+}
 
 fun String.replaceFullSlug() =
     this.replaceAfter("/episode", "")
