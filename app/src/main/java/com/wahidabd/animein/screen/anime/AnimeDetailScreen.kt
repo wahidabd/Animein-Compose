@@ -176,7 +176,8 @@ fun AnimeDetailScreen(
                 AnimeHeader(
                     color = if (isCollapsed) ColorPrimary else Color.Transparent,
                     title = anime.title,
-                    backOnClick = { navigator.navigateUp() }
+                    backOnClick = { navigator.navigateUp() },
+                    modifier = Modifier
                 )
             }
         }

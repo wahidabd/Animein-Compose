@@ -1,5 +1,6 @@
 package com.wahidabd.animein.ui.components.utils
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -38,10 +39,11 @@ import com.wahidabd.animein.ui.theme.ColorPrimary
 fun AnimeHeader(
     title: String? = null,
     color: Color = ColorPrimary,
-    backOnClick: () -> Unit
+    backOnClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .background(color)
             .fillMaxWidth()
             .height(46.dp)
@@ -63,7 +65,7 @@ fun AnimeHeader(
                 color = Color.White,
                 fontSize = 14.sp,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }

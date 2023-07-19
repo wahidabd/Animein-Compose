@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.util.lerp
 import com.wahidabd.library.data.Resource
 import kotlinx.coroutines.flow.StateFlow
+import java.util.concurrent.TimeUnit
 import kotlin.math.absoluteValue
 
 
@@ -82,6 +83,22 @@ fun Context.findActivity(): Activity {
         context = context.baseContext
     }
     throw IllegalStateException("no activity")
+}
+
+
+fun Long.formatMinSec(): String {
+    return if (this == 0L) {
+        "..."
+    } else {
+        String.format(
+            "%02d:%02d",
+            TimeUnit.MILLISECONDS.toMinutes(this),
+            TimeUnit.MILLISECONDS.toSeconds(this) -
+                    TimeUnit.MINUTES.toSeconds(
+                        TimeUnit.MILLISECONDS.toMinutes(this)
+                    )
+        )
+    }
 }
 
 fun String.replaceFullSlug() =
