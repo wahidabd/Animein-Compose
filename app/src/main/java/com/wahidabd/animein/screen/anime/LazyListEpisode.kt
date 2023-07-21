@@ -25,7 +25,7 @@ import com.wahidabd.animein.ui.components.detail.EpisodeItem
 
 fun LazyListScope.lazyListEpisode(
     episodes: LazyPagingItems<Episode>,
-    onclick: () -> Unit,
+    onclick: (url: String) -> Unit,
     onDownload: (String) -> Unit,
     onError: () -> Unit
 ) {
@@ -49,7 +49,7 @@ fun LazyListScope.lazyListEpisode(
             items(episodes) { episode ->
                 EpisodeItem(
                     episode = episode!!,
-                    onclick = { onclick() },
+                    onclick = { onclick(episode.slug) },
                     onDownload = { onDownload(it) },
                     modifier = Modifier.padding(
                         horizontal = 10.dp, vertical = 4.dp

@@ -3,6 +3,7 @@ package com.wahidabd.animein.utils
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
@@ -111,3 +112,6 @@ fun String.replaceSynopsis() =
         .replace("Catatan:", "")
 
 fun String.fullTrim() = trim().replace("\uFEFF", "")
+
+fun Context.showToast(message: String) =
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

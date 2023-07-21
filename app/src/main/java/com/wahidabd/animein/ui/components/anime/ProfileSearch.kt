@@ -46,7 +46,7 @@ fun ProfileSearch(
     ) {
         RoundedIcon(iconTint = ColorOnPrimary, icon = Icons.Default.Person, background = ColorPrimary){
 //            navigator.navigate(VideoPlayerScreenDestination)
-            PlayerActivity.start(context)
+//            PlayerActivity.start(context)
         }
         RoundedIcon(iconTint = ColorOnPrimary, icon = Icons.Outlined.Search, background = ColorPrimary){
             navigator.navigate(SearchScreenDestination)

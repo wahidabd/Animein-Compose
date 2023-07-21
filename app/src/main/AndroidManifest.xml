@@ -22,7 +22,7 @@
             android:name=".screen.player.PlayerActivity"
             android:exported="false"
             android:launchMode="singleTask"
-            android:screenOrientation="fullSensor"
+            android:screenOrientation="landscape"
             android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode"
             android:supportsPictureInPicture="true"
             android:resizeableActivity="true"

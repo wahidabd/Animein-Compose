@@ -1,9 +1,8 @@
 package com.wahidabd.animein.data.player
 
-import com.wahidabd.animein.data.hxFile
 import com.wahidabd.animein.data.kuramanime
-import com.wahidabd.animein.data.mediafire
-import com.wahidabd.animein.data.parsePlayer
+import com.wahidabd.animein.data.parserServer
+import com.wahidabd.animein.domain.player.domain.PlayerSource
 import com.wahidabd.library.data.Resource
 import com.wahidabd.library.utils.extensions.debug
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.jsoup.Jsoup
-import javax.inject.Singleton
 
 
 /**
@@ -22,14 +20,12 @@ import javax.inject.Singleton
 
 class PlayerDataSource : PlayerRepository {
 
-    override suspend fun player(): Flow<Resource<List<String>>> =
+    override suspend fun player(url: String): Flow<Resource<List<PlayerSource>>> =
         flow {
-            val document =
-                Jsoup.connect("https://zoronime.com/episode/jujutsu-kaisen-2nd-season-episode-001/")
-                    .get()
+            val jsoup = Jsoup.connect(url).get()
 
-            val result = parsePlayer(document)
-            emit(Resource.success(result))
+            val result = parserServer(url, jsoup)
+            emit(result)
 
         }.flowOn(Dispatchers.IO)
 

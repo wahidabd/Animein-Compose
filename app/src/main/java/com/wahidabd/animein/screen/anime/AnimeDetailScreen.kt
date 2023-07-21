@@ -29,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,6 +38,7 @@ import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.wahidabd.animein.screen.player.PlayerActivity
 import com.wahidabd.animein.ui.components.detail.AnimeGenreChip
 import com.wahidabd.animein.ui.components.detail.AnimeHeaderDetail
 import com.wahidabd.animein.ui.components.detail.FirstLastEpisode
@@ -62,12 +64,12 @@ fun AnimeDetailScreen(
     slug: String,
     viewModel: AnimeViewModel = hiltViewModel()
 ) {
-
-
     LaunchedEffect(Unit) {
         viewModel.detail(slug)
         viewModel.episode(slug)
     }
+
+    val context = LocalContext.current
     val episodes = viewModel.episode.value.collectAsLazyPagingItems()
 
     val listState: LazyListState = rememberLazyListState()
@@ -169,7 +171,14 @@ fun AnimeDetailScreen(
                         }
                     }
 
-                    lazyListEpisode(episodes, onclick = {}, onDownload = {}, onError = {})
+                    lazyListEpisode(
+                        episodes,
+                        onDownload = {},
+                        onError = {},
+                        onclick = {
+                            PlayerActivity.start(context = context, it)
+                        },
+                    )
                 }
 
                 // header

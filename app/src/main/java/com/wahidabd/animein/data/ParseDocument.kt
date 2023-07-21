@@ -52,30 +52,11 @@ fun parseCarousel(document: Document): List<CarouselResponse> {
     return result
 }
 
-fun parsePlayer(document: Document): List<String> {
-    val events = document.select("div.ps__-list")[1].select("div.item")
-    val size = events.size
-    val servers = mutableListOf<String>()
-
-    for (i in 0 until size) {
-        val server = events.eq(i).select("a").attr("href")
-        if (server.contains("uservideo")) {
-            servers.add(server)
-        }
-        debug { "SERVER -> $server" }
-    }
-
-    return servers
-
-}
-
 fun parseAnimeDetail(document: Document): Resource<AnimeDetail> {
 
     val widget = document.getElementsByClass("anime__details__widget")
     val left = widget.select(" div.row > div:eq(0) > ul > li")
     val right = widget.select("div.row > div:eq(1) > ul > li")
-
-    testEpisode(document)
 
     return try {
         val poster = document.getElementsByClass("anime__details__pic").attr("data-setbg")

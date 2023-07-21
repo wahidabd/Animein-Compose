@@ -5,13 +5,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ChevronLeft
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 
 
 /**
@@ -37,8 +41,16 @@ fun PlayerTopControl(
         ) {
             Icon(imageVector = Icons.Outlined.ChevronLeft, contentDescription = "", tint = Color.White)
         }
-    }
 
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleSmall,
+            color = Color.White,
+            fontSize = 14.sp,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
 }
 
 @Preview
@@ -46,6 +58,6 @@ fun PlayerTopControl(
 fun PlayerTopControlPreview() {
     PlayerTopControl(
         "One Piece",
-        onBackButton = {}
+        onBackButton = {},
     )
 }

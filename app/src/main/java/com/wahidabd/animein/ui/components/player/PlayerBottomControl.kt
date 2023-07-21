@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wahidabd.animein.R
+import com.wahidabd.animein.ui.theme.ColorOrange
 import com.wahidabd.animein.utils.formatMinSec
 
 
@@ -35,22 +36,18 @@ fun PlayerBottomControl(
     totalDuration: () -> Long,
     currentTime: () -> Long,
     bufferPercentage: () -> Int,
-    isLandscape: () -> Boolean,
-    onLandscape: () -> Unit,
+    onclick: () -> Unit,
     onSeekChanged: (timeMs: Float) -> Unit
 ) {
 
     val duration = remember(totalDuration()) { totalDuration() }
     val videoTime = remember(currentTime()) { currentTime() }
     val buffer = remember(bufferPercentage()) { bufferPercentage() }
-    val landscape = remember(isLandscape()) { isLandscape() }
 
 
     Column(modifier = modifier) {
 
-        if (!landscape) {
-            PlayerDuration(landscape = landscape , duration = duration, onLandscape = onLandscape)
-        }
+        PlayerDuration(duration = duration, onclick = { onclick() })
 
         Box(modifier = Modifier.fillMaxWidth()) {
             Slider(
@@ -72,21 +69,17 @@ fun PlayerBottomControl(
                 colors = SliderDefaults.colors(
                     thumbColor = Color.White,
                     activeTickColor = Color.DarkGray,
+                    activeTrackColor = ColorOrange
                 )
             )
-        }
-
-        if (landscape) {
-            PlayerDuration(landscape = landscape, duration = duration, onLandscape = onLandscape)
         }
     }
 }
 
 @Composable
 private fun PlayerDuration(
-    landscape: Boolean,
     duration: Long,
-    onLandscape: () -> Unit
+    onclick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -101,15 +94,9 @@ private fun PlayerDuration(
             color = Color.White
         )
 
-        IconButton(onClick = { onLandscape() }, modifier = Modifier.padding(horizontal = 16.dp)) {
+        IconButton(onClick = { onclick() }, modifier = Modifier.padding(horizontal = 16.dp)) {
             Icon(
-                painter = painterResource(
-                    if (landscape) {
-                        R.drawable.ic_exit_fullscreen
-                    } else {
-                        R.drawable.ic_fullscreen
-                    }
-                ),
+                painter = painterResource(id = R.drawable.ic_settings),
                 tint = Color.White,
                 contentDescription = "Backward 5 second",
             )
@@ -125,7 +112,6 @@ fun PlayerBottomControlPreview() {
         currentTime = { 1000 },
         bufferPercentage = { 500 },
         onSeekChanged = { 100F },
-        isLandscape = { false },
-        onLandscape = {}
+        onclick = {}
     )
 }

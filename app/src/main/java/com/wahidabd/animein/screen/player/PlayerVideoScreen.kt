@@ -6,12 +6,9 @@ import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE
 import android.content.res.Configuration
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout
-import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
@@ -31,6 +28,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Player.STATE_ENDED
@@ -40,10 +38,10 @@ import androidx.media3.ui.PlayerView.SHOW_BUFFERING_WHEN_PLAYING
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.ramcosta.composedestinations.annotation.Destination
 import com.wahidabd.animein.ui.components.player.PlayerControl
-import com.wahidabd.animein.ui.components.player.setScreenOrientation
-import com.wahidabd.animein.ui.theme.ColorPrimary
 import com.wahidabd.animein.utils.Constant
+import com.wahidabd.animein.utils.collectStateFlow
 import com.wahidabd.animein.utils.findComponentActivity
+import com.wahidabd.library.utils.common.emptyString
 import kotlinx.coroutines.delay
 
 
@@ -57,7 +55,10 @@ import kotlinx.coroutines.delay
 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 @Destination
 @Composable
-fun VideoPlayerScreen() {
+fun VideoPlayerScreen(
+    contentUrl: String,
+    viewModel: PlayerViewModel = hiltViewModel()
+) {
 
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
@@ -66,6 +67,8 @@ fun VideoPlayerScreen() {
     val activity = context.findComponentActivity()!!
     val enterFullScreen = { activity.requestedOrientation = SCREEN_ORIENTATION_USER_LANDSCAPE }
     val exitFullScreen = { activity.requestedOrientation = SCREEN_ORIENTATION_UNSPECIFIED }
+    val url = remember { mutableStateOf(emptyString()) }
+
 
     // control
     var shouldShowControl by remember { mutableStateOf(false) }
@@ -76,8 +79,20 @@ fun VideoPlayerScreen() {
     var currentTime by remember { mutableLongStateOf(0L) }
 
 
-    val url = "https://archive.org/download/AtCFIkRgEM_20220225/26/MP4/Kuramanime-KnY_BD-26_END-360p-Anitoki.mp4"
-    val exoPlayer = remember { exoplayerBuilder(url = url, context = context) }
+
+    LaunchedEffect(Unit){
+        viewModel.player(contentUrl)
+    }
+
+    viewModel.player.collectStateFlow(
+        onLoading = {},
+        onFailure = {_, _ -> },
+        onSuccess = {
+            url.value = if (it.isNotEmpty()) it[0].url else ""
+        }
+    )
+
+    val exoPlayer = remember { exoplayerBuilder(url = url.value, context = context) }
 
     LaunchedEffect(key1 = shouldShowControl) {
         if (shouldShowControl) {
@@ -99,7 +114,7 @@ fun VideoPlayerScreen() {
 
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                 super.onMediaItemTransition(mediaItem, reason)
-                // onTrailerChane and title
+                // onTrailerChange and title
             }
         }
         exoPlayer.addListener(listener)
@@ -114,78 +129,58 @@ fun VideoPlayerScreen() {
         systemUiController.isNavigationBarVisible = !isLandscape
     }
 
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(ColorPrimary)
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
     ) {
-        Box(
-            modifier = Modifier.setScreenOrientation(isLandscape),
-            contentAlignment = Alignment.Center,
-        ) {
-            AndroidView(
-                factory = {
-                    PlayerView(context).apply {
-                        useController = false
-                        player = exoPlayer
-                        resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-                        layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
-                        setShowBuffering(SHOW_BUFFERING_WHEN_PLAYING)
-                    }
-                },
-                modifier = Modifier
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = rememberRipple(color = Color.DarkGray)
-                    ) {
-                        shouldShowControl = shouldShowControl.not()
-                    }
-            )
+        AndroidView(
+            factory = {
+                PlayerView(context).apply {
+                    useController = false
+                    player = exoPlayer
+                    resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+                    layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+                    setShowBuffering(SHOW_BUFFERING_WHEN_PLAYING)
+                }
+            },
+            modifier = Modifier
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(color = Color.DarkGray)
+                ) {
+                    shouldShowControl = shouldShowControl.not()
+                }
+        )
 
-            PlayerControl(
-                isVisible = { shouldShowControl },
-                isPlaying = { isPlaying },
-                onBackward = { exoPlayer.seekBack() },
-                onForward = { exoPlayer.seekForward() },
-                totalDuration = { duration },
-                currentTime = { timer },
-                bufferPercentage = { bufferedPercentage },
-                isLandscape = { isLandscape },
-                onLandscape = { if (isLandscape) exitFullScreen() else enterFullScreen() },
-                onSeekChanged = { position -> exoPlayer.seekTo(position.toLong()) },
-                onPause = {
-                    when {
-                        exoPlayer.isPlaying -> {
-                            exoPlayer.pause()
-                        }
-
-                        exoPlayer.isPlaying.not() && exoPlayer.playbackState == STATE_ENDED -> {
-                            exoPlayer.seekTo(0, 0)
-                            exoPlayer.playWhenReady = true
-                        }
-
-                        else -> {
-                            exoPlayer.play()
-                        }
+        PlayerControl(
+            isVisible = { shouldShowControl },
+            isPlaying = { isPlaying },
+            onBackward = { exoPlayer.seekBack() },
+            onForward = { exoPlayer.seekForward() },
+            totalDuration = { duration },
+            currentTime = { timer },
+            bufferPercentage = { bufferedPercentage },
+            onSeekChanged = { position -> exoPlayer.seekTo(position.toLong()) },
+            onSettingClick = {},
+            onBackButton = { activity.onBackPressedDispatcher.onBackPressed() },
+            onPause = {
+                when {
+                    exoPlayer.isPlaying -> {
+                        exoPlayer.pause()
                     }
-                    isPlaying = isPlaying.not()
-                },
-                modifier = Modifier.setScreenOrientation(isLandscape)
-            )
-        }
+
+                    exoPlayer.isPlaying.not() && exoPlayer.playbackState == STATE_ENDED -> {
+                        exoPlayer.seekTo(0, 0)
+                        exoPlayer.playWhenReady = true
+                    }
+
+                    else -> {
+                        exoPlayer.play()
+                    }
+                }
+                isPlaying = isPlaying.not()
+            },
+            modifier = Modifier.fillMaxSize()
+        )
     }
-
-
-    BackHandler(isLandscape) {
-        exitFullScreen()
-    }
-
-}
-
-
-@Preview
-@Composable
-fun VideoPlayerScreenPreview() {
-    VideoPlayerScreen()
 }

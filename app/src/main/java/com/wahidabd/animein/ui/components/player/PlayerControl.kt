@@ -37,8 +37,8 @@ fun PlayerControl(
     totalDuration: () -> Long,
     currentTime: () -> Long,
     bufferPercentage: () -> Int,
-    isLandscape: () -> Boolean,
-    onLandscape: () -> Unit,
+    onSettingClick: () -> Unit,
+    onBackButton: () -> Unit,
     onSeekChanged: (timeMs: Float) -> Unit
 ) {
     val visible = remember(isVisible()) { isVisible() }
@@ -54,7 +54,7 @@ fun PlayerControl(
         ) {
             PlayerTopControl(
                 title = "",
-                onBackButton = {},
+                onBackButton = { onBackButton() },
                 modifier = Modifier
                     .align(Alignment.TopCenter)
                     .fillMaxWidth()
@@ -82,9 +82,8 @@ fun PlayerControl(
                 totalDuration = totalDuration,
                 currentTime = currentTime,
                 bufferPercentage = bufferPercentage,
-                isLandscape = isLandscape,
-                onLandscape = onLandscape,
                 onSeekChanged = onSeekChanged,
+                onclick = { onSettingClick() },
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
@@ -119,13 +118,13 @@ fun PlayerControlPreview() {
         currentTime = { 1000 },
         bufferPercentage = { 500 },
         onSeekChanged = { 100F },
-        isLandscape = { false },
-        onLandscape = {},
         isPlaying = { true },
         onBackward = {},
         onForward = {},
         onPause = {},
         isVisible = { true },
+        onSettingClick = {},
+        onBackButton = {},
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(16F / 9F)

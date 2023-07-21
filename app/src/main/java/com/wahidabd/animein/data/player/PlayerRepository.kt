@@ -1,5 +1,6 @@
 package com.wahidabd.animein.data.player
 
+import com.wahidabd.animein.domain.player.domain.PlayerSource
 import com.wahidabd.library.data.Resource
 import kotlinx.coroutines.flow.Flow
 
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface PlayerRepository {
 
-    suspend fun player(): Flow<Resource<List<String>>>
+    suspend fun player(url: String): Flow<Resource<List<PlayerSource>>>
     suspend fun videoUrl(url: String): Flow<Resource<String>>
 
 }

@@ -1,6 +1,7 @@
 package com.wahidabd.animein.domain.player
 
 import com.wahidabd.animein.data.player.PlayerRepository
+import com.wahidabd.animein.domain.player.domain.PlayerSource
 import com.wahidabd.library.data.Resource
 import com.wahidabd.library.utils.coroutine.boundResource.InternetBoundResource
 import kotlinx.coroutines.flow.Flow
@@ -13,17 +14,19 @@ import javax.inject.Inject
  */
 
 
-class PlayerInteractor @Inject constructor(private val repository: PlayerRepository) :
-    PlayerUseCase {
-    override fun player(): Flow<Resource<List<String>>> {
-        return object : InternetBoundResource<List<String>, List<String>>() {
-            override suspend fun createCall(): Flow<Resource<List<String>>> {
-                return repository.player()
+class PlayerInteractor @Inject constructor(
+    private val repository: PlayerRepository
+) : PlayerUseCase {
+    override fun player(url: String): Flow<Resource<List<PlayerSource>>> {
+        return object : InternetBoundResource<List<PlayerSource>, List<PlayerSource>>() {
+            override suspend fun createCall(): Flow<Resource<List<PlayerSource>>> {
+                return repository.player(url)
             }
 
-            override suspend fun saveCallRequest(data: List<String>): List<String> {
+            override suspend fun saveCallRequest(data: List<PlayerSource>): List<PlayerSource> {
                 return data
             }
+
         }.asFlow()
     }
 

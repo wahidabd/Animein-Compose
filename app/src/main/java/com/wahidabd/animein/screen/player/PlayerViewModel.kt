@@ -3,6 +3,7 @@ package com.wahidabd.animein.screen.player
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wahidabd.animein.domain.player.PlayerUseCase
+import com.wahidabd.animein.domain.player.domain.PlayerSource
 import com.wahidabd.library.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,15 +22,12 @@ import javax.inject.Inject
 @HiltViewModel
 class PlayerViewModel @Inject constructor(private val useCase: PlayerUseCase) : ViewModel() {
 
-    private val _player = MutableStateFlow<Resource<List<String>>>(Resource.loading())
-    val player: StateFlow<Resource<List<String>>> get() = _player
+    private val _player = MutableStateFlow<Resource<List<PlayerSource>>>(Resource.loading())
+    val player: StateFlow<Resource<List<PlayerSource>>> get() = _player
 
     private val _videoUrl = MutableStateFlow<Resource<String>>(Resource.loading())
     val videoUrl: StateFlow<Resource<String>> get() = _videoUrl
 
-    init {
-        player()
-    }
 
     fun videoUrl(url: String) {
         useCase.videoUrl(url)
@@ -37,8 +35,8 @@ class PlayerViewModel @Inject constructor(private val useCase: PlayerUseCase) : 
             .launchIn(viewModelScope)
     }
 
-    private fun player() {
-        useCase.player()
+    fun player(url: String) {
+        useCase.player(url)
             .onEach { _player.value = it }
             .launchIn(viewModelScope)
     }
