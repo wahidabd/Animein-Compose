@@ -1,5 +1,6 @@
 package com.wahidabd.animein.data.home
 
+import com.wahidabd.animein.data.blogger
 import com.wahidabd.animein.domain.anime.model.Anime
 import com.wahidabd.animein.domain.anime.model.Carousel
 import com.wahidabd.animein.utils.Constant.BASE_URL
@@ -28,6 +29,7 @@ class HomeDataSource : HomeRepository {
             val events = jsoup.select("div.trending__product")[2]
                 .select("div.row")[1].select("div.product__item")
             emit(parseItem(events))
+            blogger("https://www.blogger.com/video.g?token=AD6v5dxyZeqYUtZ2YsGxKZRZ0RvGnzCKZpgAdXkwg5TBaQdwTuIuHTcFYAgnncoQN-kKznYVHH4cHZa9agBu7LoKde6zBZUT0jz02DtgSLsidLiwCopZ4QS4mmlSPIIa4ML59dUFz94")
         }catch (e: Exception){
             when (e) {
                 is TimeoutException -> emit(Resource.fail(e.message.toString()))

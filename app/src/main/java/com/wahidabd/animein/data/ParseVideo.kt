@@ -78,6 +78,28 @@ fun wibuFile(url: String): Resource<String> {
 }
 
 
+fun blogger(url: String){
+
+    val jsoup = Jsoup.connect(url).method(Connection.Method.GET).execute()
+    jsoup.body()
+        .takeIf { !it.contains("errorContainer") }!!
+        .substringAfter("\"streams\":[")
+        .substringBefore("]")
+        .split("},")
+        .map {
+            val videoUrl = it.substringAfter("{\"play_url\":\"").substringBefore('"')
+            val format = it.substringAfter("\"format_id\":").substringBefore("}")
+            val quality = when (format) {
+                "18" -> "360p"
+                "22" -> "720p"
+                else -> "Unknown"
+            }
+            debug { "VIDEO -> $videoUrl $format $quality" }
+        }
+
+}
+
+
 fun krakenVideo(url: String): Resource<String> {
     return try {
         val jsoup = Jsoup.connect(url).get()

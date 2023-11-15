@@ -18,6 +18,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -26,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.common.MediaItem
@@ -37,11 +37,15 @@ import androidx.media3.ui.PlayerView
 import androidx.media3.ui.PlayerView.SHOW_BUFFERING_WHEN_PLAYING
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.ramcosta.composedestinations.annotation.Destination
+import com.wahidabd.animein.domain.player.domain.PlayerSource
+import com.wahidabd.animein.ui.components.dialog.PlayerServerDialog
 import com.wahidabd.animein.ui.components.player.PlayerControl
 import com.wahidabd.animein.utils.Constant
 import com.wahidabd.animein.utils.collectStateFlow
 import com.wahidabd.animein.utils.findComponentActivity
+import com.wahidabd.animein.utils.showToast
 import com.wahidabd.library.utils.common.emptyString
+import com.wahidabd.library.utils.extensions.debug
 import kotlinx.coroutines.delay
 
 
@@ -68,7 +72,8 @@ fun VideoPlayerScreen(
     val enterFullScreen = { activity.requestedOrientation = SCREEN_ORIENTATION_USER_LANDSCAPE }
     val exitFullScreen = { activity.requestedOrientation = SCREEN_ORIENTATION_UNSPECIFIED }
     val url = remember { mutableStateOf(emptyString()) }
-
+    val serverList = remember { mutableStateListOf(PlayerSource()) }
+    val showDialog = remember { mutableStateOf(false) }
 
     // control
     var shouldShowControl by remember { mutableStateOf(false) }
@@ -79,108 +84,135 @@ fun VideoPlayerScreen(
     var currentTime by remember { mutableLongStateOf(0L) }
 
 
-
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         viewModel.player(contentUrl)
     }
 
+    if (showDialog.value) {
+        PlayerServerDialog(
+            sources = serverList,
+            onclick = {
+                url.value = it
+            },
+            onDismiss = {
+                showDialog.value = it
+            }
+        )
+    }
+
+
+
     viewModel.player.collectStateFlow(
         onLoading = {},
-        onFailure = {_, _ -> },
+        onFailure = { _, message ->
+            context.showToast(message.toString())
+        },
+        onEmpty = {
+            context.showToast("Server is empty")
+        },
         onSuccess = {
-            url.value = if (it.isNotEmpty()) it[0].url else ""
+            serverList.clear()
+            serverList.addAll(it)
+            url.value = it[2].url
+            debug { "URL VALUE -> ${url.value}" }
+
+
+
+            val exoPlayer = remember { exoplayerBuilder(url = url.value, context = context) }
+
+            LaunchedEffect(key1 = shouldShowControl) {
+                if (shouldShowControl) {
+                    delay(Constant.PLAYER_CONTROLS_VISIBILITY)
+                    shouldShowControl = false
+                }
+            }
+
+            DisposableEffect(exoPlayer) {
+                val listener = object : Player.Listener {
+                    override fun onEvents(player: Player, events: Player.Events) {
+                        super.onEvents(player, events)
+                        isPlaying = player.isPlaying
+                        duration = if (player.duration > 0) player.duration else 0L
+                        timer = player.contentPosition
+                        bufferedPercentage = player.bufferedPercentage
+                        // minus playback
+                    }
+
+                    override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                        super.onMediaItemTransition(mediaItem, reason)
+                        // onTrailerChange and title
+                    }
+                }
+                exoPlayer.addListener(listener)
+                onDispose {
+                    exoPlayer.removeListener(listener)
+                    exoPlayer.release()
+                }
+            }
+
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                AndroidView(
+                    factory = {
+                        PlayerView(context).apply {
+                            useController = false
+                            player = exoPlayer
+                            resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+                            layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+                            setShowBuffering(SHOW_BUFFERING_WHEN_PLAYING)
+                        }
+                    },
+                    modifier = Modifier
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = rememberRipple(color = Color.DarkGray)
+                        ) {
+                            shouldShowControl = shouldShowControl.not()
+                        }
+                )
+
+                PlayerControl(
+                    isVisible = { shouldShowControl },
+                    isPlaying = { isPlaying },
+                    onBackward = { exoPlayer.seekBack() },
+                    onForward = { exoPlayer.seekForward() },
+                    totalDuration = { duration },
+                    currentTime = { timer },
+                    bufferPercentage = { bufferedPercentage },
+                    onSeekChanged = { position -> exoPlayer.seekTo(position.toLong()) },
+                    onSettingClick = { showDialog.value = true },
+                    onBackButton = { activity.onBackPressedDispatcher.onBackPressed() },
+                    onPause = {
+                        when {
+                            exoPlayer.isPlaying -> {
+                                exoPlayer.pause()
+                            }
+
+                            exoPlayer.isPlaying.not() && exoPlayer.playbackState == STATE_ENDED -> {
+                                exoPlayer.seekTo(0, 0)
+                                exoPlayer.playWhenReady = true
+                            }
+
+                            else -> {
+                                exoPlayer.play()
+                            }
+                        }
+                        isPlaying = isPlaying.not()
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
     )
 
-    val exoPlayer = remember { exoplayerBuilder(url = url.value, context = context) }
 
-    LaunchedEffect(key1 = shouldShowControl) {
-        if (shouldShowControl) {
-            delay(Constant.PLAYER_CONTROLS_VISIBILITY)
-            shouldShowControl = false
-        }
-    }
-
-    DisposableEffect(exoPlayer) {
-        val listener = object : Player.Listener {
-            override fun onEvents(player: Player, events: Player.Events) {
-                super.onEvents(player, events)
-                isPlaying = player.isPlaying
-                duration = if (player.duration > 0) player.duration else 0L
-                timer = player.contentPosition
-                bufferedPercentage = player.bufferedPercentage
-                // minus playback
-            }
-
-            override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-                super.onMediaItemTransition(mediaItem, reason)
-                // onTrailerChange and title
-            }
-        }
-        exoPlayer.addListener(listener)
-        onDispose {
-            exoPlayer.removeListener(listener)
-            exoPlayer.release()
-        }
-    }
 
     SideEffect {
         systemUiController.isStatusBarVisible = !isLandscape
         systemUiController.isNavigationBarVisible = !isLandscape
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        AndroidView(
-            factory = {
-                PlayerView(context).apply {
-                    useController = false
-                    player = exoPlayer
-                    resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-                    layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
-                    setShowBuffering(SHOW_BUFFERING_WHEN_PLAYING)
-                }
-            },
-            modifier = Modifier
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple(color = Color.DarkGray)
-                ) {
-                    shouldShowControl = shouldShowControl.not()
-                }
-        )
 
-        PlayerControl(
-            isVisible = { shouldShowControl },
-            isPlaying = { isPlaying },
-            onBackward = { exoPlayer.seekBack() },
-            onForward = { exoPlayer.seekForward() },
-            totalDuration = { duration },
-            currentTime = { timer },
-            bufferPercentage = { bufferedPercentage },
-            onSeekChanged = { position -> exoPlayer.seekTo(position.toLong()) },
-            onSettingClick = {},
-            onBackButton = { activity.onBackPressedDispatcher.onBackPressed() },
-            onPause = {
-                when {
-                    exoPlayer.isPlaying -> {
-                        exoPlayer.pause()
-                    }
-
-                    exoPlayer.isPlaying.not() && exoPlayer.playbackState == STATE_ENDED -> {
-                        exoPlayer.seekTo(0, 0)
-                        exoPlayer.playWhenReady = true
-                    }
-
-                    else -> {
-                        exoPlayer.play()
-                    }
-                }
-                isPlaying = isPlaying.not()
-            },
-            modifier = Modifier.fillMaxSize()
-        )
-    }
 }

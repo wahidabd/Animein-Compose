@@ -76,7 +76,8 @@ fun PlayerServerDialog(
                             .clip(RoundedCornerShape(4.dp))
                             .background(ColorSecondary.copy(alpha = 0.56F))
                             .padding(vertical = 6.dp)
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .clickable { onclick(source.url) },
                     ){
                         Text(
                             text = "${source.server} - (${source.resolution})",

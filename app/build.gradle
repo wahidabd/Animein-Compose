@@ -149,6 +149,11 @@ dependencies {
     // media3
     implementation 'androidx.media3:media3-exoplayer:1.1.0'
     implementation "androidx.media3:media3-ui:1.1.0"
+    implementation('androidx.media3:media3-exoplayer-hls:1.1.0')
+    implementation('androidx.media3:media3-exoplayer-dash:1.1.0')
+    implementation('androidx.media3:media3-extractor:1.1.0')
+    implementation('androidx.media3:media3-datasource-cronet:1.1.0')
+    implementation('androidx.media3:media3-datasource-okhttp:1.1.0')
 
     // logging
     implementation("com.jakewharton.timber:timber:5.0.1")

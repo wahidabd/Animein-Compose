@@ -1,8 +1,8 @@
 package com.wahidabd.animein.data
 
 import com.wahidabd.animein.domain.player.domain.PlayerSource
+import com.wahidabd.animein.utils.Constant
 import com.wahidabd.library.data.Resource
-import com.wahidabd.library.utils.common.emptyString
 import com.wahidabd.library.utils.extensions.debug
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -36,9 +36,10 @@ suspend fun parserServer(url: String, doc: Document): Resource<List<PlayerSource
         else Resource.success(result)
 
     } catch (e: Exception) {
+        debug { "Exception: ${e.localizedMessage}" }
         when (e) {
             is TimeoutException -> Resource.fail(e.message.toString())
-            else -> Resource.fail("Unknown Error Exception")
+            else -> Resource.fail(e.localizedMessage)
         }
     }
 }
@@ -57,9 +58,23 @@ private suspend fun videoFromServer(url: String, value: String): List<PlayerSour
         val resolution = event.eq(i).attr("size")
 
         val data = PlayerSource(url = source, resolution = resolution, server = value)
-
         result.add(data)
+        debug { "SERVER VIDEO -> $data" }
     }
 
     return result
+}
+
+private suspend fun parseArchive(url: String): String {
+
+    val jsoup = withContext(Dispatchers.IO) {
+        Jsoup.connect(url)
+            .followRedirects(true).execute()
+    }
+
+    debug { "URL -> $url" }
+    debug { "Get Header Location : ${jsoup.header("Location")}" }
+    debug { "Get Header Location : ${jsoup.url()}" }
+
+    return jsoup.url().toString()
 }

@@ -1,4 +1,4 @@
-package com.wahidabd.animein.screen.player
+package com.wahidabd.animein.screen.player.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

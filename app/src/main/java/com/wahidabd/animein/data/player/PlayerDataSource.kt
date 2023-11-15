@@ -34,7 +34,7 @@ class PlayerDataSource : PlayerRepository {
 //            emit(mediafire("https://www.mediafire.com/file/fji0gaa1jssobr9/Alqanime_IsekaiVendingMachine_02_360p.mp4/file"))
 
             debug { "VIDEO URL" }
-            emit(kuramanime("https://kuramanime.xyz/anime/50/one-piece/episode/989?activate_stream=1&stream_server=kuramadrive"))
+            emit(kuramanime(url))
         }.flowOn(Dispatchers.IO)
     }
 
