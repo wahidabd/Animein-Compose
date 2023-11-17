@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Animeku</string>
+    <string name="label_play_now">Nonton Sekarang</string>
+    <string name="label_detail">Detail</string>
+    <string name="label_bullet">\u2022</string>
+</resources>
