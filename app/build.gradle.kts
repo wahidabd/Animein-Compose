@@ -1,9 +1,8 @@
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.include
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp") version "1.8.10-1.0.9"
+    id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -43,7 +42,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
     packaging {
         resources {
@@ -69,6 +68,10 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    // compose
+    implementation("androidx.compose.ui:ui-util:1.5.4")
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
+
     // onelib
     implementation("com.github.wahidabd:onelib:1.0.1")
 
@@ -84,18 +87,30 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager:0.28.0")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
 
-    // coil
+    // Coil
     implementation("io.coil-kt:coil-compose:2.4.0")
 
     // Landscapist image loader
     implementation("com.github.skydoves:landscapist-coil:1.4.9")
 
-    // lottie
+    // Lottie
     implementation("com.airbnb.android:lottie-compose:5.0.3")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.44")
-    ksp("com.google.dagger:hilt-compiler:2.44")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation("com.google.dagger:hilt-android:2.48")
+    ksp("com.google.dagger:hilt-compiler:2.48")
+
+    // Pagination
+    implementation("androidx.paging:paging-compose:3.3.0-alpha02")
+
+    // Room
+    implementation("androidx.room:room-runtime:2.6.0")
+    implementation("androidx.room:room-ktx:2.6.0")
+    ksp("androidx.room:room-compiler:2.6.0")
+
+    // Jsoup
+    implementation("org.jsoup:jsoup:1.15.4")
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))
 }

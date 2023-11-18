@@ -6,10 +6,10 @@ import com.wahidabd.animeku.ui.screen.destinations.Destination
 import com.wahidabd.animeku.ui.screen.destinations.HomeScreenDestination
 import com.wahidabd.animeku.ui.screen.destinations.MoreScreenDestination
 import com.wahidabd.animeku.ui.screen.destinations.SearchScreenDestination
-import com.wahidabd.animeku.utils.Constants.BOOKMARK
-import com.wahidabd.animeku.utils.Constants.HOME
-import com.wahidabd.animeku.utils.Constants.MORE
-import com.wahidabd.animeku.utils.Constants.SEARCH
+import com.wahidabd.animeku.utils.constants.Constants.BOOKMARK
+import com.wahidabd.animeku.utils.constants.Constants.HOME
+import com.wahidabd.animeku.utils.constants.Constants.MORE
+import com.wahidabd.animeku.utils.constants.Constants.SEARCH
 
 
 /**
