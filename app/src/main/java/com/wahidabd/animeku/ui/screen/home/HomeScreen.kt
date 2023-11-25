@@ -79,6 +79,7 @@ fun NestedScrollItem(
     viewModel: HomeViewModel
 ) {
 
+    val state: LazyListState = rememberForeverLazyListState(key = "home")
     LaunchedEffect(Unit) {
         viewModel.initViewModel()
     }
@@ -91,7 +92,7 @@ fun NestedScrollItem(
         onEmpty = { LottieEmpty() },
     ) { animeList ->
         LazyColumn(
-            state = rememberForeverLazyListState(key = "home"),
+            state = state,
             contentPadding = PaddingValues(bottom = 16.dp),
             modifier = Modifier
                 .fillMaxSize()
@@ -159,6 +160,9 @@ fun HorizontalScrollableAnime(
     navigator: DestinationsNavigator,
     items: StateFlow<Resource<List<Anime>>>
 ) {
+
+    val state: LazyListState = rememberForeverLazyListState(key = "anime_horizontal")
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxWidth()
@@ -168,7 +172,7 @@ fun HorizontalScrollableAnime(
             onFailure = { _, _ -> }
         ) { anime ->
             LazyRow(
-                state = rememberForeverLazyListState(key = "anime"),
+                state = state,
                 contentPadding = PaddingValues(horizontal = 8.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {

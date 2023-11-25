@@ -41,6 +41,34 @@ fun parseAnime(doc: Document): List<AnimeResponse> {
     return result
 }
 
+fun parseAnimeSearch(doc: Document): List<AnimeResponse>{
+    val result = mutableListOf<AnimeResponse>()
+    val event = doc.select("main > article")
+    val size = event.size
+
+    for (i in 0 until size) {
+        val content = event.eq(i).select("div > div > a")
+        val slug = content.attr("href")
+        val title = content.select("div.data > div.title > h2").text()
+        val poster = content.select("div.content-thumb > img").attr("src")
+        val type = content.select("div.content-thumb > div.type").text()
+        val rating = content.select("div.content-thumb > div.score").text()
+        val status = content.select("div.data > div.type").text()
+
+        val item = AnimeResponse(
+            slug = slug,
+            title = title,
+            poster = poster,
+            type = type,
+            rating = rating,
+            status = status
+        )
+        result.add(item)
+    }
+
+    return result
+}
+
 fun parseAnimeDetail(doc: Document): AnimeDetailResponse {
 
     // event listener

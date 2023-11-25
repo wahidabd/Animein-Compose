@@ -5,7 +5,9 @@ import androidx.paging.PagingState
 import coil.network.HttpException
 import com.wahidabd.animeku.data.anime.dto.AnimeResponse
 import com.wahidabd.animeku.data.parseAnime
+import com.wahidabd.animeku.data.parseAnimeSearch
 import com.wahidabd.animeku.utils.constants.Endpoints.ANIME_LIST
+import com.wahidabd.animeku.utils.constants.Endpoints.BASE_URL
 import com.wahidabd.library.utils.common.emptyString
 import com.wahidabd.library.utils.extensions.debug
 import kotlinx.coroutines.Dispatchers
@@ -20,21 +22,28 @@ import java.io.IOException
  */
 
 
-class AnimePagingSource(private val endpoint: String? = emptyString()) :
-    PagingSource<Int, AnimeResponse>() {
+class AnimePagingSource(
+    private val endpoint: String? = emptyString(),
+    private val isSearch: Boolean = false
+) : PagingSource<Int, AnimeResponse>() {
+
     override fun getRefreshKey(state: PagingState<Int, AnimeResponse>): Int? =
         state.anchorPosition
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AnimeResponse> =
         try {
             val position = params.key ?: 1
-            val url = if (position == 1) "$ANIME_LIST$endpoint"
-            else "${ANIME_LIST}page/$position/$endpoint"
+
+            val url = if (!isSearch){
+                if (position == 1) "$ANIME_LIST$endpoint"
+                else "${ANIME_LIST}page/$position/$endpoint"
+            }else{
+                if (position == 1) "$BASE_URL$endpoint"
+                else "${BASE_URL}page/$position/$endpoint"
+            }
 
             val document = withContext(Dispatchers.IO) { Jsoup.connect(url).get() }
-            val items = parseAnime(document)
-
-            debug { "item -> $items" }
+            val items = if (!isSearch) parseAnime(document) else parseAnimeSearch(document)
 
             LoadResult.Page(
                 data = items,

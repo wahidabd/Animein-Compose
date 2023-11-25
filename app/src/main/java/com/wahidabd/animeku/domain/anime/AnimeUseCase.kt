@@ -23,4 +23,5 @@ interface AnimeUseCase {
     suspend fun animeList(endpoint: String): Flow<PagingData<Anime>>
     suspend fun detail(slug: String): Flow<Resource<AnimeDetail>>
     suspend fun episode(slug: String): Flow<Resource<List<Episode>>>
+    suspend fun search(q: String): Flow<PagingData<Anime>>
 }

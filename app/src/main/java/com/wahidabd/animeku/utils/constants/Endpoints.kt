@@ -15,4 +15,5 @@ object Endpoints {
     const val FINISH = "?order=update&status=Finished+Airing"
     const val ONGOING = "?order=updated&status=Currently+Airing"
     const val MOVIE = "?order=updated&type=Movie"
+    const val SEARCH = "?s="
 }

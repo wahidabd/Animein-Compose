@@ -1,6 +1,7 @@
 package com.wahidabd.animeku.data.anime
 
 import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.wahidabd.animeku.data.anime.dto.AnimeDetailResponse
 import com.wahidabd.animeku.data.anime.dto.AnimeResponse
@@ -88,7 +89,7 @@ class AnimeDataSource : AnimeRepository {
 
     override suspend fun animeList(endpoint: String): Flow<PagingData<AnimeResponse>> =
         Pager(
-            config = androidx.paging.PagingConfig(
+            config = PagingConfig(
                 pageSize = 10,
                 enablePlaceholders = false
             ), pagingSourceFactory = { AnimePagingSource(endpoint) }
@@ -117,5 +118,17 @@ class AnimeDataSource : AnimeRepository {
         }
 
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun search(q: String): Flow<PagingData<AnimeResponse>> =
+        try {
+            Pager(
+                config = PagingConfig(
+                    pageSize = 10,
+                    enablePlaceholders = false
+                ), pagingSourceFactory = { AnimePagingSource(Endpoints.SEARCH + q, true) }
+            ).flow
+        }catch (e: Exception){
+            throw Exception(e.message.toString())
+        }
 
 }

@@ -125,4 +125,12 @@ class AnimeInteractor @Inject constructor(private val repository: AnimeRepositor
                 }
             }
         }.asFlow()
+
+    override suspend fun search(q: String): Flow<PagingData<Anime>> {
+        return repository.search(q).map { pagingData ->
+            pagingData.map { anime ->
+                anime.toDomain()
+            }
+        }
+    }
 }
