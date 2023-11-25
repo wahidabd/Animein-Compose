@@ -82,3 +82,5 @@ fun Long.formatMinSec(): String {
         )
     }
 }
+
+fun String.fullTrim() = trim().replace("\uFEFF", "")

@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.wahidabd.animeku.ui.theme.ColorDarkGray
@@ -31,8 +32,9 @@ import com.wahidabd.animeku.ui.theme.Shapes
 
 @Composable
 fun TextRectangleOrange(
+    modifier: Modifier = Modifier,
     text: String,
-    modifier: Modifier = Modifier
+    fontSize: TextUnit = 10.sp,
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -55,7 +57,7 @@ fun TextRectangleOrange(
             Text(
                 text = text,
                 style = MaterialTheme.typography.titleSmall,
-                fontSize = 10.sp,
+                fontSize = fontSize,
                 color = Color.White
             )
         }
@@ -80,4 +82,19 @@ fun TextRectangleDarkGray(
             color = Color.White
         )
     }
+}
+
+@Composable
+fun TextBackgroundDarkGray(
+    text: String
+) {
+    Text(
+        text = text,
+        modifier = Modifier
+            .clip(shape = RoundedCornerShape(size = 4.dp))
+            .background(Color.DarkGray.copy(alpha = 0.65F))
+            .padding(4.dp),
+        color = Color.White.copy(alpha = 0.78F),
+        fontSize = 10.sp,
+    )
 }

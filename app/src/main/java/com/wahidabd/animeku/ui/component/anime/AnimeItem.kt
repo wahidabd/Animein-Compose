@@ -1,4 +1,4 @@
-package com.wahidabd.animeku.ui.component
+package com.wahidabd.animeku.ui.component.anime
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -29,6 +29,8 @@ import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.coil.CoilImage
 import com.wahidabd.animeku.R
 import com.wahidabd.animeku.domain.anime.model.Anime
+import com.wahidabd.animeku.ui.component.TextRectangleDarkGray
+import com.wahidabd.animeku.ui.component.TextRectangleOrange
 import com.wahidabd.animeku.ui.theme.Shapes
 import com.wahidabd.animeku.utils.shimmerParams
 
@@ -90,7 +92,7 @@ fun AnimeItem(
             )
 
             TextRectangleOrange(
-                text = data.rating.toString(),
+                text = data.rating ?: "?",
                 modifier = Modifier
                     .padding(4.dp)
             )

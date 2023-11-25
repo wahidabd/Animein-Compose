@@ -1,14 +1,20 @@
 package com.wahidabd.animeku.data.anime
 
+import androidx.paging.Pager
+import androidx.paging.PagingData
+import com.wahidabd.animeku.data.anime.dto.AnimeDetailResponse
 import com.wahidabd.animeku.data.anime.dto.AnimeResponse
+import com.wahidabd.animeku.data.anime.dto.EpisodeResponse
+import com.wahidabd.animeku.data.anime.paging.AnimePagingSource
 import com.wahidabd.animeku.data.parseAnime
+import com.wahidabd.animeku.data.parseAnimeDetail
+import com.wahidabd.animeku.data.parseEpisode
 import com.wahidabd.animeku.utils.constants.Endpoints
 import com.wahidabd.library.data.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 
 
@@ -20,47 +26,96 @@ import org.jsoup.Jsoup
 
 class AnimeDataSource : AnimeRepository {
 
-    override suspend fun spotlight(): Flow<Resource<List<AnimeResponse>>> =
-        withContext(Dispatchers.IO) {
-            flow {
-                val doc = Jsoup.connect(Endpoints.SPOTLIGHT).get()
-                val result = parseAnime(doc)
+    override suspend fun spotlight(): Flow<Resource<List<AnimeResponse>>> = flow {
+        try {
+            val doc = Jsoup.connect(Endpoints.ANIME_LIST + Endpoints.SPOTLIGHT).get()
+            val result = parseAnime(doc)
 
-                if (result.isNotEmpty()) emit(Resource.Success(result))
-                else emit(Resource.empty())
-            }.flowOn(Dispatchers.IO)
+            if (result.isNotEmpty()) emit(Resource.Success(result))
+            else emit(Resource.empty())
+        }catch (e: Exception){
+            emit(Resource.fail(e.message.toString()))
         }
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun populars(): Flow<Resource<List<AnimeResponse>>> = flow {
-        val doc = Jsoup.connect(Endpoints.POPULAR).get()
-        val result = parseAnime(doc)
+        try {
+            val doc = Jsoup.connect(Endpoints.ANIME_LIST + Endpoints.POPULAR).get()
+            val result = parseAnime(doc)
 
-        if (result.isNotEmpty()) emit(Resource.Success(result))
-        else emit(Resource.empty())
+            if (result.isNotEmpty()) emit(Resource.Success(result))
+            else emit(Resource.empty())
+        } catch (e: Exception) {
+            emit(Resource.fail(e.message.toString()))
+        }
     }.flowOn(Dispatchers.IO)
 
     override suspend fun movies(): Flow<Resource<List<AnimeResponse>>> = flow {
-        val doc = Jsoup.connect(Endpoints.MOVIE).get()
-        val result = parseAnime(doc)
+        try {
+            val doc = Jsoup.connect(Endpoints.ANIME_LIST + Endpoints.MOVIE).get()
+            val result = parseAnime(doc)
 
-        if (result.isNotEmpty()) emit(Resource.Success(result))
-        else emit(Resource.empty())
+            if (result.isNotEmpty()) emit(Resource.Success(result))
+            else emit(Resource.empty())
+        } catch (e: Exception) {
+            emit(Resource.fail(e.message.toString()))
+        }
     }.flowOn(Dispatchers.IO)
 
     override suspend fun ongoings(): Flow<Resource<List<AnimeResponse>>> = flow {
-        val doc = Jsoup.connect(Endpoints.ONGOING).get()
-        val result = parseAnime(doc)
+        try {
+            val doc = Jsoup.connect(Endpoints.ANIME_LIST + Endpoints.ONGOING).get()
+            val result = parseAnime(doc)
 
-        if (result.isNotEmpty()) emit(Resource.Success(result))
-        else emit(Resource.empty())
+            if (result.isNotEmpty()) emit(Resource.Success(result))
+            else emit(Resource.empty())
+        } catch (e: Exception) {
+            emit(Resource.fail(e.message.toString()))
+        }
     }.flowOn(Dispatchers.IO)
 
     override suspend fun finished(): Flow<Resource<List<AnimeResponse>>> = flow {
-        val doc = Jsoup.connect(Endpoints.FINISH).get()
-        val result = parseAnime(doc)
+        try {
+            val doc = Jsoup.connect(Endpoints.ANIME_LIST + Endpoints.FINISH).get()
+            val result = parseAnime(doc)
 
-        if (result.isNotEmpty()) emit(Resource.Success(result))
-        else emit(Resource.empty())
+            if (result.isNotEmpty()) emit(Resource.Success(result))
+            else emit(Resource.empty())
+        } catch (e: Exception) {
+            emit(Resource.fail(e.message.toString()))
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun animeList(endpoint: String): Flow<PagingData<AnimeResponse>> =
+        Pager(
+            config = androidx.paging.PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = false
+            ), pagingSourceFactory = { AnimePagingSource(endpoint) }
+        ).flow
+
+    override suspend fun detail(slug: String): Flow<Resource<AnimeDetailResponse>> = flow {
+        try {
+            val doc = Jsoup.connect(slug).get()
+            val result = parseAnimeDetail(doc)
+
+            emit(Resource.Success(result))
+        } catch (e: Exception) {
+            emit(Resource.fail(e.message.toString()))
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun episode(slug: String): Flow<Resource<List<EpisodeResponse>>> = flow {
+        try {
+            val doc = Jsoup.connect(slug).get()
+            val result = parseEpisode(doc)
+
+            if (result.isNotEmpty()) emit(Resource.Success(result))
+            else emit(Resource.empty())
+        } catch (e: Exception) {
+            emit(Resource.fail(e.message.toString()))
+        }
+
     }.flowOn(Dispatchers.IO)
 
 }

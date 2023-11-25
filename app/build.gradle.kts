@@ -51,6 +51,17 @@ android {
     }
 }
 
+kotlin {
+    sourceSets {
+        debug {
+            kotlin.srcDir("build/generated/ksp/debug/kotlin")
+        }
+        release {
+            kotlin.srcDir("build/generated/ksp/release/kotlin")
+        }
+    }
+}
+
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -71,9 +82,14 @@ dependencies {
     // compose
     implementation("androidx.compose.ui:ui-util:1.5.4")
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     // onelib
     implementation("com.github.wahidabd:onelib:1.0.1")
+
+    // navigation
+    implementation("androidx.compose.material:material:1.5.4")
+    implementation("androidx.navigation:navigation-compose:2.7.5")
 
     // raamcosta
     implementation("io.github.raamcosta.compose-destinations:core:1.9.54")
@@ -108,6 +124,9 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.0")
     implementation("androidx.room:room-ktx:2.6.0")
     ksp("androidx.room:room-compiler:2.6.0")
+
+    // Rating Bar
+    implementation("com.github.a914-gowtham:compose-ratingbar:1.2.3")
 
     // Jsoup
     implementation("org.jsoup:jsoup:1.15.4")

@@ -18,13 +18,3 @@ data class Anime(
     val rating: String? = emptyString(),
     val status: String? = emptyString()
 )
-
-fun AnimeResponse.toDomain(): Anime =
-    Anime(
-        slug = slug,
-        poster = poster,
-        title = title,
-        type = type,
-        rating = rating,
-        status = status
-    )

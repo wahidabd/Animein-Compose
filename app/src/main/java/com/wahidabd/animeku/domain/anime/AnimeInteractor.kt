@@ -1,12 +1,19 @@
 package com.wahidabd.animeku.domain.anime
 
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.wahidabd.animeku.data.anime.AnimeRepository
+import com.wahidabd.animeku.data.anime.dto.AnimeDetailResponse
 import com.wahidabd.animeku.data.anime.dto.AnimeResponse
+import com.wahidabd.animeku.data.anime.dto.EpisodeResponse
 import com.wahidabd.animeku.domain.anime.model.Anime
-import com.wahidabd.animeku.domain.anime.model.toDomain
+import com.wahidabd.animeku.domain.anime.model.AnimeDetail
+import com.wahidabd.animeku.domain.anime.model.Episode
+import com.wahidabd.animeku.domain.anime.model.mapper.toDomain
 import com.wahidabd.library.data.Resource
 import com.wahidabd.library.utils.coroutine.boundResource.InternetBoundResource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 
@@ -86,5 +93,36 @@ class AnimeInteractor @Inject constructor(private val repository: AnimeRepositor
                 }
             }
 
+        }.asFlow()
+
+    override suspend fun animeList(endpoint: String): Flow<PagingData<Anime>> =
+        repository.animeList(endpoint).map { pagingData ->
+            pagingData.map { anime ->
+                anime.toDomain()
+            }
+        }
+
+    override suspend fun detail(slug: String): Flow<Resource<AnimeDetail>> =
+        object : InternetBoundResource<AnimeDetail, AnimeDetailResponse>() {
+            override suspend fun createCall(): Flow<Resource<AnimeDetailResponse>> {
+                return repository.detail(slug)
+            }
+
+            override suspend fun saveCallRequest(data: AnimeDetailResponse): AnimeDetail {
+                return data.toDomain()
+            }
+        }.asFlow()
+
+    override suspend fun episode(slug: String): Flow<Resource<List<Episode>>> =
+        object : InternetBoundResource<List<Episode>, List<EpisodeResponse>>() {
+            override suspend fun createCall(): Flow<Resource<List<EpisodeResponse>>> {
+                return repository.episode(slug)
+            }
+
+            override suspend fun saveCallRequest(data: List<EpisodeResponse>): List<Episode> {
+                return data.map { episode ->
+                    episode.toDomain()
+                }
+            }
         }.asFlow()
 }
