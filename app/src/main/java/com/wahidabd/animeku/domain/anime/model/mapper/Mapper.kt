@@ -1,9 +1,10 @@
 package com.wahidabd.animeku.domain.anime.model.mapper
 
-import com.wahidabd.animeku.data.anime.dto.AnimeDetailResponse
-import com.wahidabd.animeku.data.anime.dto.AnimeResponse
-import com.wahidabd.animeku.data.anime.dto.EpisodeResponse
-import com.wahidabd.animeku.data.anime.dto.GenreResponse
+import com.wahidabd.animeku.data.local.anime.dto.AnimeEntity
+import com.wahidabd.animeku.data.remote.anime.dto.AnimeDetailResponse
+import com.wahidabd.animeku.data.remote.anime.dto.AnimeResponse
+import com.wahidabd.animeku.data.remote.anime.dto.EpisodeResponse
+import com.wahidabd.animeku.data.remote.anime.dto.GenreResponse
 import com.wahidabd.animeku.domain.anime.model.Anime
 import com.wahidabd.animeku.domain.anime.model.AnimeDetail
 import com.wahidabd.animeku.domain.anime.model.Episode
@@ -41,6 +42,16 @@ fun EpisodeResponse.toDomain(): Episode =
     )
 
 
+fun AnimeEntity.toAnime(): Anime =
+    Anime(
+        slug = slug,
+        poster = poster,
+        title = title,
+        type = type,
+        rating = rating,
+        status = status
+    )
+
 fun AnimeDetailResponse.toDomain(): AnimeDetail =
     AnimeDetail(
         slug = slug,
@@ -55,5 +66,38 @@ fun AnimeDetailResponse.toDomain(): AnimeDetail =
         totalEpisode = totalEpisode,
         releaseDate = releaseDate,
         studio = studio,
-        genres = genres?.map { it.toDomain() }
+        genres = genres?.map { it.toDomain() },
+        bookmark = false
+    )
+
+fun AnimeDetail.toEntity(): AnimeEntity =
+    AnimeEntity(
+        slug = slug ?: "",
+        poster = poster,
+        title = title,
+        type = type,
+        rating = rating,
+        status = status,
+        totalEpisode = totalEpisode,
+        releaseDate = releaseDate,
+        studio = studio,
+        season = season,
+        duration = duration,
+        bookmark = bookmark
+    )
+
+fun AnimeEntity?.toDomain(): AnimeDetail =
+    AnimeDetail(
+        slug = this?.slug,
+        poster = this?.poster,
+        title = this?.title,
+        type = this?.type,
+        rating = this?.rating,
+        status = this?.status,
+        totalEpisode = this?.totalEpisode,
+        releaseDate = this?.releaseDate,
+        studio = this?.studio,
+        season = this?.season,
+        duration = this?.duration,
+        bookmark = this?.bookmark
     )

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.wahidabd.animeku.domain.anime.AnimeUseCase
+import com.wahidabd.animeku.domain.anime.remote.AnimeUseCase
 import com.wahidabd.animeku.domain.anime.model.Anime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow

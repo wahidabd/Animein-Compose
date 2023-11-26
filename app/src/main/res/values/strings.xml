@@ -3,4 +3,8 @@
     <string name="label_play_now">Nonton Sekarang</string>
     <string name="label_detail">Detail</string>
     <string name="label_bullet">\u2022</string>
+    <string name="label_bookmark">Are you sure want to bookmark this anime?</string>
+    <string name="label_un_bookmark">Are you sure want to unbookmark this anime?</string>
+    <string name="action_bookmark">Bookmark</string>
+    <string name="action_un_bookmark">Unbookmark</string>
 </resources>

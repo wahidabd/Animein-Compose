@@ -1,4 +1,4 @@
-package com.wahidabd.animeku.domain.anime
+package com.wahidabd.animeku.domain.anime.remote
 
 import androidx.paging.PagingData
 import com.wahidabd.animeku.domain.anime.model.Anime

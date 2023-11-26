@@ -65,18 +65,5 @@ fun EpisodeItem(
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(all = 10.dp)
         )
-
-//        IconButton(
-//            onClick = { onDownload(episode.slug.toString()) },
-//            modifier = Modifier
-//                .size(32.dp)
-//                .padding(6.dp)
-//        ) {
-//            Icon(
-//                painter = painterResource(id = R.drawable.ic_downlaod),
-//                tint = Color.White.copy(alpha = 0.55F),
-//                contentDescription = "Download"
-//            )
-//        }
     }
 }

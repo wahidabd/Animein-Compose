@@ -73,7 +73,7 @@ fun AnimeScreen(
 
             is LoadState.NotLoading -> {
                 LazyVerticalGrid(
-                    state = rememberForeverLazyListGridState(key = "anime"),
+                    state = state,
                     columns = GridCells.Fixed(2),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     horizontalArrangement = Arrangement.spacedBy(10.dp),

@@ -1,9 +1,9 @@
-package com.wahidabd.animeku.data.anime
+package com.wahidabd.animeku.data.remote.anime
 
 import androidx.paging.PagingData
-import com.wahidabd.animeku.data.anime.dto.AnimeDetailResponse
-import com.wahidabd.animeku.data.anime.dto.AnimeResponse
-import com.wahidabd.animeku.data.anime.dto.EpisodeResponse
+import com.wahidabd.animeku.data.remote.anime.dto.AnimeDetailResponse
+import com.wahidabd.animeku.data.remote.anime.dto.AnimeResponse
+import com.wahidabd.animeku.data.remote.anime.dto.EpisodeResponse
 import com.wahidabd.library.data.Resource
 import kotlinx.coroutines.flow.Flow
 

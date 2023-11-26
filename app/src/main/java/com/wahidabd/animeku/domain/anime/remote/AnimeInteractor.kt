@@ -1,11 +1,11 @@
-package com.wahidabd.animeku.domain.anime
+package com.wahidabd.animeku.domain.anime.remote
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.wahidabd.animeku.data.anime.AnimeRepository
-import com.wahidabd.animeku.data.anime.dto.AnimeDetailResponse
-import com.wahidabd.animeku.data.anime.dto.AnimeResponse
-import com.wahidabd.animeku.data.anime.dto.EpisodeResponse
+import com.wahidabd.animeku.data.remote.anime.AnimeRepository
+import com.wahidabd.animeku.data.remote.anime.dto.AnimeDetailResponse
+import com.wahidabd.animeku.data.remote.anime.dto.AnimeResponse
+import com.wahidabd.animeku.data.remote.anime.dto.EpisodeResponse
 import com.wahidabd.animeku.domain.anime.model.Anime
 import com.wahidabd.animeku.domain.anime.model.AnimeDetail
 import com.wahidabd.animeku.domain.anime.model.Episode

@@ -53,7 +53,9 @@ import com.wahidabd.animeku.ui.theme.ColorSecondary
 
 @Composable
 fun AnimeHeader(
-    anime: AnimeDetail
+    anime: AnimeDetail,
+    isFavorite: Boolean = false,
+    onBookmark: () -> Unit,
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -242,9 +244,9 @@ fun AnimeHeader(
                     )
                 }
 
-                IconButton(onClick = {}) {
+                IconButton(onClick = { onBookmark() }) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_bookmark),
+                        painter = painterResource(id = if (!isFavorite) R.drawable.ic_bookmark else R.drawable.ic_bookmark_filled),
                         tint = Color.White.copy(alpha = 0.45F),
                         contentDescription = "add to watch list icon",
                         modifier = Modifier.size(22.dp)
@@ -271,6 +273,7 @@ fun AnimeHeaderDetailPreview() {
             totalEpisode = "1089",
             releaseDate = "1 Oktober 2002",
             studio = "Madhouse"
-        )
+        ),
+        onBookmark = {}
     )
 }

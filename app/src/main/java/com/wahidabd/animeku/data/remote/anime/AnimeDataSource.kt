@@ -1,15 +1,15 @@
-package com.wahidabd.animeku.data.anime
+package com.wahidabd.animeku.data.remote.anime
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.wahidabd.animeku.data.anime.dto.AnimeDetailResponse
-import com.wahidabd.animeku.data.anime.dto.AnimeResponse
-import com.wahidabd.animeku.data.anime.dto.EpisodeResponse
-import com.wahidabd.animeku.data.anime.paging.AnimePagingSource
-import com.wahidabd.animeku.data.parseAnime
-import com.wahidabd.animeku.data.parseAnimeDetail
-import com.wahidabd.animeku.data.parseEpisode
+import com.wahidabd.animeku.data.remote.anime.dto.AnimeDetailResponse
+import com.wahidabd.animeku.data.remote.anime.dto.AnimeResponse
+import com.wahidabd.animeku.data.remote.anime.dto.EpisodeResponse
+import com.wahidabd.animeku.data.remote.anime.paging.AnimePagingSource
+import com.wahidabd.animeku.data.remote.parseAnime
+import com.wahidabd.animeku.data.remote.parseAnimeDetail
+import com.wahidabd.animeku.data.remote.parseEpisode
 import com.wahidabd.animeku.utils.constants.Endpoints
 import com.wahidabd.library.data.Resource
 import kotlinx.coroutines.Dispatchers

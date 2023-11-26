@@ -47,6 +47,7 @@ fun SearchScreen(
         modifier = Modifier
             .background(ColorPrimary)
             .fillMaxSize()
+            .padding(all = 16.dp),
     ) {
         SearchBar(
             autoFocus = true,
@@ -76,7 +77,6 @@ fun SearchScreen(
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
                         modifier = Modifier
-                            .padding(horizontal = 16.dp)
                             .fillMaxSize(),
                         contentPadding = PaddingValues(vertical = 12.dp)
                     ) {
@@ -97,6 +97,5 @@ fun SearchScreen(
                 }
             }
         }
-
     }
 }

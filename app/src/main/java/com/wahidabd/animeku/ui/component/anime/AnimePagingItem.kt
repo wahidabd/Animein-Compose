@@ -1,8 +1,9 @@
 package com.wahidabd.animeku.ui.component.anime
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,22 +45,24 @@ import com.wahidabd.animeku.utils.gradientVerticalBrush
  */
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AnimePagingItem(
     data: Anime?,
     onclick: (slug: String) -> Unit
 ) {
 
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(248.dp)
             .clip(RoundedCornerShape(6.dp))
-            .clickable(
+            .combinedClickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(color = Color.LightGray)
-            ) { onclick.invoke(data?.slug.toString()) },
+                indication = rememberRipple(color = Color.LightGray),
+                onClick = { onclick.invoke(data?.slug.toString()) },
+                onLongClick = {},
+            ),
     ) {
         CoilImage(
             imageModel = data?.poster,

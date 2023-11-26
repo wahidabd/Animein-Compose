@@ -1,6 +1,6 @@
 package com.wahidabd.animeku.domain.anime.model
 
-import com.wahidabd.animeku.data.anime.dto.AnimeResponse
+import com.wahidabd.animeku.data.remote.anime.dto.AnimeResponse
 import com.wahidabd.library.utils.common.emptyString
 
 
@@ -16,5 +16,5 @@ data class Anime(
     val title: String? = emptyString(),
     val type: String? = emptyString(),
     val rating: String? = emptyString(),
-    val status: String? = emptyString()
+    val status: String? = emptyString(),
 )

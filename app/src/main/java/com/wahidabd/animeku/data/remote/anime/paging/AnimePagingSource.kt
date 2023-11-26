@@ -1,15 +1,14 @@
-package com.wahidabd.animeku.data.anime.paging
+package com.wahidabd.animeku.data.remote.anime.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import coil.network.HttpException
-import com.wahidabd.animeku.data.anime.dto.AnimeResponse
-import com.wahidabd.animeku.data.parseAnime
-import com.wahidabd.animeku.data.parseAnimeSearch
+import com.wahidabd.animeku.data.remote.anime.dto.AnimeResponse
+import com.wahidabd.animeku.data.remote.parseAnime
+import com.wahidabd.animeku.data.remote.parseAnimeSearch
 import com.wahidabd.animeku.utils.constants.Endpoints.ANIME_LIST
 import com.wahidabd.animeku.utils.constants.Endpoints.BASE_URL
 import com.wahidabd.library.utils.common.emptyString
-import com.wahidabd.library.utils.extensions.debug
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup

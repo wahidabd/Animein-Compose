@@ -1,9 +1,9 @@
-package com.wahidabd.animeku.data
+package com.wahidabd.animeku.data.remote
 
-import com.wahidabd.animeku.data.anime.dto.AnimeDetailResponse
-import com.wahidabd.animeku.data.anime.dto.AnimeResponse
-import com.wahidabd.animeku.data.anime.dto.EpisodeResponse
-import com.wahidabd.animeku.data.anime.dto.GenreResponse
+import com.wahidabd.animeku.data.remote.anime.dto.AnimeDetailResponse
+import com.wahidabd.animeku.data.remote.anime.dto.AnimeResponse
+import com.wahidabd.animeku.data.remote.anime.dto.EpisodeResponse
+import com.wahidabd.animeku.data.remote.anime.dto.GenreResponse
 import com.wahidabd.library.utils.extensions.debug
 import org.jsoup.nodes.Document
 
@@ -78,7 +78,6 @@ fun parseAnimeDetail(doc: Document): AnimeDetailResponse {
 
     // list
     val genres = mutableListOf<GenreResponse>()
-    val episodes = mutableListOf<EpisodeResponse>()
 
     // anime detail
     val poster = event.select("div.infoanime.widget_senction > div.thumb > img").attr("src")

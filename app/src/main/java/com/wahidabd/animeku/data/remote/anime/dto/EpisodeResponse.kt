@@ -1,4 +1,4 @@
-package com.wahidabd.animeku.data.anime.dto
+package com.wahidabd.animeku.data.remote.anime.dto
 
 
 /**

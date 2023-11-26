@@ -22,5 +22,6 @@ data class AnimeDetail(
     val totalEpisode: String? = emptyString(),
     val releaseDate: String? = emptyString(),
     val studio: String? = emptyString(),
-    val genres: List<Genre>? = emptyList()
+    val genres: List<Genre>? = emptyList(),
+    var bookmark: Boolean? = false
 )

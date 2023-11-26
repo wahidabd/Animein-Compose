@@ -1,4 +1,4 @@
-package com.wahidabd.animeku.data.anime.dto
+package com.wahidabd.animeku.data.remote.anime.dto
 
 
 /**
@@ -8,6 +8,7 @@ package com.wahidabd.animeku.data.anime.dto
 
 
 data class AnimeDetailResponse(
+    val id: Int? = 0,
     val slug: String? = null,
     val poster: String? = null,
     val title: String? = null,
