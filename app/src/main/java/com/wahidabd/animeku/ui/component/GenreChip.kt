@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.wahidabd.animeku.domain.anime.model.Genre
 import com.wahidabd.animeku.ui.theme.ColorSecondary
 
 
@@ -27,8 +28,8 @@ import com.wahidabd.animeku.ui.theme.ColorSecondary
 
 @Composable
 fun AnimeGenreChip(
-    text: String,
-    onclick: (slug: String) -> Unit = {}
+    genre: Genre,
+    onclick: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -37,11 +38,11 @@ fun AnimeGenreChip(
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = Color.DarkGray),
-                onClick = { onclick(text) }
+                onClick = { onclick.invoke() }
             )
     ) {
         Text(
-            text = text,
+            text = genre.title.toString(),
             style = MaterialTheme.typography.titleMedium,
             fontSize = 12.sp,
             color = Color.White,

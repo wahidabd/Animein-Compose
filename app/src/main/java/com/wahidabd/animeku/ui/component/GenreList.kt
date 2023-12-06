@@ -22,7 +22,8 @@ import com.wahidabd.animeku.domain.anime.model.Genre
 @Composable
 fun GenreList(
     genres: List<Genre>,
-    expanded: Boolean
+    expanded: Boolean,
+    onClick: (genre: Genre) -> Unit
 ) {
     if (expanded) {
         FlowRow(
@@ -32,7 +33,10 @@ fun GenreList(
             crossAxisSpacing = 4.dp
         ) {
             genres.forEach { genre ->
-                AnimeGenreChip(text = genre.title.toString())
+                AnimeGenreChip(
+                    genre = genre,
+                    onclick = { onClick(genre) }
+                )
             }
         }
     } else {
@@ -44,7 +48,10 @@ fun GenreList(
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             this.items(genres) { genre ->
-                AnimeGenreChip(text = genre.title.toString())
+                AnimeGenreChip(
+                    genre = genre,
+                    onclick = { onClick(genre) }
+                )
             }
         }
     }

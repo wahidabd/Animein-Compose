@@ -11,6 +11,8 @@ import com.wahidabd.animeku.data.remote.parseAnime
 import com.wahidabd.animeku.data.remote.parseAnimeDetail
 import com.wahidabd.animeku.data.remote.parseEpisode
 import com.wahidabd.animeku.utils.constants.Endpoints
+import com.wahidabd.animeku.utils.enums.AnimeType
+import com.wahidabd.animeku.utils.enums.PagingType
 import com.wahidabd.library.data.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -125,7 +127,19 @@ class AnimeDataSource : AnimeRepository {
                 config = PagingConfig(
                     pageSize = 10,
                     enablePlaceholders = false
-                ), pagingSourceFactory = { AnimePagingSource(Endpoints.SEARCH + q, true) }
+                ), pagingSourceFactory = { AnimePagingSource(Endpoints.SEARCH + q, PagingType.SEARCH) }
+            ).flow
+        }catch (e: Exception){
+            throw Exception(e.message.toString())
+        }
+
+    override suspend fun genres(endpoint: String): Flow<PagingData<AnimeResponse>> =
+        try {
+            Pager(
+                config = PagingConfig(
+                    pageSize = 10,
+                    enablePlaceholders = false,
+                ), pagingSourceFactory = {AnimePagingSource(endpoint, PagingType.GENRE)}
             ).flow
         }catch (e: Exception){
             throw Exception(e.message.toString())

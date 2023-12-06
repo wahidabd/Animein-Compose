@@ -13,10 +13,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -48,13 +50,32 @@ class HomeViewModel @Inject constructor(private val useCase: AnimeUseCase) : Vie
     private val _paging = mutableStateOf<Flow<PagingData<Anime>>>(emptyFlow())
     val paging: State<Flow<PagingData<Anime>>> get() = _paging
 
-    fun initViewModel(){
-        spotLight()
-        populars()
-        movies()
-        ongoings()
-        finished()
+    fun combineFlow() {
+        viewModelScope.launch {
+            combine(
+                useCase.spotLight(),
+                useCase.ongoings(),
+                useCase.populars(),
+                useCase.movies(),
+                useCase.finished()
+            ) { spotLight, ongoings, populars, movies, finished ->
+                _spotLight.value = spotLight
+                _ongoings.value = ongoings
+                _populars.value = populars
+                _movies.value = movies
+                _finished.value = finished
+            }
+                .launchIn(viewModelScope)
+        }
     }
+
+//    fun initViewModel(){
+//        spotLight()
+//        populars()
+//        movies()
+//        ongoings()
+//        finished()
+//    }
 
     private fun combine(){
 

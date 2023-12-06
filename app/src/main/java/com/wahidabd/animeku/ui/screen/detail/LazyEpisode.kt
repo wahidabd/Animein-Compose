@@ -1,9 +1,8 @@
-package com.wahidabd.animeku.ui.screen.anime
+package com.wahidabd.animeku.ui.screen.detail
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.wahidabd.animeku.domain.anime.model.Episode

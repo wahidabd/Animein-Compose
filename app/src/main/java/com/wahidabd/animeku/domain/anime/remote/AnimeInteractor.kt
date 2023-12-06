@@ -133,4 +133,12 @@ class AnimeInteractor @Inject constructor(private val repository: AnimeRepositor
             }
         }
     }
+
+    override suspend fun genres(endpoint: String): Flow<PagingData<Anime>> {
+        return repository.genres(endpoint).map { pagingData ->
+            pagingData.map { anime ->
+                anime.toDomain()
+            }
+        }
+    }
 }

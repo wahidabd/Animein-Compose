@@ -8,6 +8,7 @@ import com.wahidabd.animeku.data.remote.parseAnime
 import com.wahidabd.animeku.data.remote.parseAnimeSearch
 import com.wahidabd.animeku.utils.constants.Endpoints.ANIME_LIST
 import com.wahidabd.animeku.utils.constants.Endpoints.BASE_URL
+import com.wahidabd.animeku.utils.enums.PagingType
 import com.wahidabd.library.utils.common.emptyString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -23,7 +24,7 @@ import java.io.IOException
 
 class AnimePagingSource(
     private val endpoint: String? = emptyString(),
-    private val isSearch: Boolean = false
+    private val pagingType: PagingType = PagingType.NORMAL
 ) : PagingSource<Int, AnimeResponse>() {
 
     override fun getRefreshKey(state: PagingState<Int, AnimeResponse>): Int? =
@@ -33,16 +34,14 @@ class AnimePagingSource(
         try {
             val position = params.key ?: 1
 
-            val url = if (!isSearch){
-                if (position == 1) "$ANIME_LIST$endpoint"
-                else "${ANIME_LIST}page/$position/$endpoint"
-            }else{
-                if (position == 1) "$BASE_URL$endpoint"
-                else "${BASE_URL}page/$position/$endpoint"
+            val url = when(pagingType) {
+                PagingType.NORMAL -> if (position == 1) "${ANIME_LIST}$endpoint" else "${ANIME_LIST}page/$position/$endpoint"
+                PagingType.SEARCH -> "${BASE_URL}page/$position/$endpoint"
+                PagingType.GENRE -> "$endpoint/page/$position"
             }
 
             val document = withContext(Dispatchers.IO) { Jsoup.connect(url).get() }
-            val items = if (!isSearch) parseAnime(document) else parseAnimeSearch(document)
+            val items = if (pagingType == PagingType.NORMAL) parseAnime(document) else parseAnimeSearch(document)
 
             LoadResult.Page(
                 data = items,

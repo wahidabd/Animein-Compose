@@ -26,7 +26,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.wahidabd.animeku.ui.screen.anime.AnimeViewModel
 import com.wahidabd.animeku.ui.screen.search.SearchViewModel
 import com.wahidabd.animeku.ui.theme.ColorPrimary
 import com.wahidabd.library.utils.common.emptyString

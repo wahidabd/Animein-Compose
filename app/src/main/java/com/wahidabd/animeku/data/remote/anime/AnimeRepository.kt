@@ -24,4 +24,5 @@ interface AnimeRepository {
     suspend fun detail(slug: String): Flow<Resource<AnimeDetailResponse>>
     suspend fun episode(slug: String): Flow<Resource<List<EpisodeResponse>>>
     suspend fun search(q: String): Flow<PagingData<AnimeResponse>>
+    suspend fun genres(endpoint: String): Flow<PagingData<AnimeResponse>>
 }

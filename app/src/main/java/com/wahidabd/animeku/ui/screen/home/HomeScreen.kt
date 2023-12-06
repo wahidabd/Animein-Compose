@@ -64,24 +64,27 @@ fun HomeScreen(
     navigator: DestinationsNavigator?,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+
+    val state: LazyListState = rememberForeverLazyListState(key = "home")
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(ColorPrimary)
     ) {
-        NestedScrollItem(navigator = navigator!!, viewModel = viewModel)
+        NestedScrollItem(navigator = navigator!!, state = state, viewModel = viewModel)
     }
 }
 
 @Composable
 fun NestedScrollItem(
     navigator: DestinationsNavigator,
+    state: LazyListState,
     viewModel: HomeViewModel
 ) {
 
-    val state: LazyListState = rememberForeverLazyListState(key = "home")
     LaunchedEffect(Unit) {
-        viewModel.initViewModel()
+        viewModel.combineFlow()
     }
 
     viewModel.spotLight.collectStateFlow(

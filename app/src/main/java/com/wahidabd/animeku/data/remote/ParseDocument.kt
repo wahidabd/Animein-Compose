@@ -103,6 +103,8 @@ fun parseAnimeDetail(doc: Document): AnimeDetailResponse {
         genres.add(GenreResponse(slug = genreSlug, title = genreTitle))
     }
 
+    debug { "$genres" }
+
     return AnimeDetailResponse(
         poster = poster,
         title = title,
@@ -139,8 +141,6 @@ fun parseEpisode(doc: Document): List<EpisodeResponse> {
                 date = episodeDate
             )
         )
-
-        debug{"Episode Slug: $episodeSlug\n"}
     }
 
     return result

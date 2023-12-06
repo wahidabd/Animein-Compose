@@ -1,4 +1,4 @@
-package com.wahidabd.animeku.ui.screen.anime
+package com.wahidabd.animeku.ui.screen.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -33,7 +33,7 @@ import com.wahidabd.animeku.ui.component.anime.AnimeHeader
 import com.wahidabd.animeku.ui.component.anime.SynopsisContent
 import com.wahidabd.animeku.ui.component.lottie.LottieError
 import com.wahidabd.animeku.ui.component.lottie.LottieLoading
-import com.wahidabd.animeku.ui.screen.bookmark.BookmarkViewModel
+import com.wahidabd.animeku.ui.screen.destinations.GenreScreenDestination
 import com.wahidabd.animeku.ui.theme.ColorPrimary
 import com.wahidabd.library.utils.exts.collectStateFlow
 
@@ -108,7 +108,10 @@ fun AnimeDetailScreen(
                     item {
                         GenreList(
                             genres = anime.genres ?: emptyList(),
-                            expanded = isSynopsisExpanded
+                            expanded = isSynopsisExpanded,
+                            onClick = { genre ->
+                                navigator.navigate(GenreScreenDestination())
+                            }
                         )
                     }
 
