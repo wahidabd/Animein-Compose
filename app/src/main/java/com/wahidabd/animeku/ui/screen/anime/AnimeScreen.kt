@@ -1,4 +1,4 @@
-package com.wahidabd.animeku.ui.screen.detail
+package com.wahidabd.animeku.ui.screen.anime
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,36 +25,37 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.network.HttpException
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.wahidabd.animeku.domain.anime.model.Genre
 import com.wahidabd.animeku.ui.component.HeaderBackButton
 import com.wahidabd.animeku.ui.component.anime.AnimePagingItem
 import com.wahidabd.animeku.ui.component.lottie.LottieLoading
 import com.wahidabd.animeku.ui.screen.destinations.AnimeDetailScreenDestination
 import com.wahidabd.animeku.ui.theme.ColorDarkPurple
 import com.wahidabd.animeku.ui.theme.ColorPrimary
+import com.wahidabd.animeku.utils.enums.AnimeType
 import com.wahidabd.animeku.utils.rememberForeverLazyListGridState
 import java.io.IOException
 
 
 /**
- * Created by wahid on 11/28/2023.
+ * Created by wahid on 11/18/2023.
  * Github github.com/wahidabd.
  */
 
 
 @Destination
 @Composable
-fun GenreScreen(
-    genre: Genre,
+fun AnimeScreen(
     navigator: DestinationsNavigator,
+    type: AnimeType = AnimeType.ONGOING,
     viewModel: AnimeViewModel = hiltViewModel()
 ) {
 
     val state: LazyGridState = rememberForeverLazyListGridState(key = "anime_screen")
 
-    LaunchedEffect(Unit){
-        viewModel.paging(genre.slug.toString())
+    LaunchedEffect(Unit) {
+        viewModel.paging(type.query.toString())
     }
+
 
     val pagingData = viewModel.paging.value.collectAsLazyPagingItems()
     Column(
@@ -62,7 +63,7 @@ fun GenreScreen(
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        HeaderBackButton(title = genre.title.toString(), onBackClick = { navigator.popBackStack() })
+        HeaderBackButton(title = type.label, onBackClick = { navigator.navigateUp() })
 
         when (pagingData.loadState.refresh) {
             is LoadState.Loading -> {
@@ -81,7 +82,7 @@ fun GenreScreen(
                     contentPadding = PaddingValues(vertical = 12.dp)
                 ) {
                     items(pagingData.itemCount) { index ->
-                        AnimePagingItem(data = pagingData[index]){ slug ->
+                        AnimePagingItem(data = pagingData[index]) { slug ->
                             // handle navigation to detail
                             navigator.navigate(AnimeDetailScreenDestination(slug = slug))
                         }
@@ -125,5 +126,4 @@ fun GenreScreen(
             else -> {}
         }
     }
-
 }

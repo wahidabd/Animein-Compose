@@ -1,4 +1,4 @@
-package com.wahidabd.animeku.ui.screen.home
+package com.wahidabd.animeku.ui.screen.genre
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,37 +25,36 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.network.HttpException
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.wahidabd.animeku.ui.component.anime.AnimePagingItem
+import com.wahidabd.animeku.domain.anime.model.Genre
 import com.wahidabd.animeku.ui.component.HeaderBackButton
+import com.wahidabd.animeku.ui.component.anime.AnimePagingItem
 import com.wahidabd.animeku.ui.component.lottie.LottieLoading
 import com.wahidabd.animeku.ui.screen.destinations.AnimeDetailScreenDestination
+import com.wahidabd.animeku.ui.screen.detail.AnimeViewModel
 import com.wahidabd.animeku.ui.theme.ColorDarkPurple
 import com.wahidabd.animeku.ui.theme.ColorPrimary
-import com.wahidabd.animeku.utils.enums.AnimeType
 import com.wahidabd.animeku.utils.rememberForeverLazyListGridState
 import java.io.IOException
 
 
 /**
- * Created by wahid on 11/18/2023.
+ * Created by wahid on 11/28/2023.
  * Github github.com/wahidabd.
  */
 
-
 @Destination
 @Composable
-fun AnimeScreen(
+fun GenreScreen(
+    genre: Genre,
     navigator: DestinationsNavigator,
-    type: AnimeType = AnimeType.ONGOING,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: AnimeViewModel = hiltViewModel()
 ) {
 
-    val state: LazyGridState = rememberForeverLazyListGridState(key = "anime_screen")
+    val state: LazyGridState = rememberForeverLazyListGridState(key = "genre_screen")
 
     LaunchedEffect(Unit){
-        viewModel.paging(type.query.toString())
+        viewModel.paging(genre.slug.toString())
     }
-
 
     val pagingData = viewModel.paging.value.collectAsLazyPagingItems()
     Column(
@@ -64,7 +62,7 @@ fun AnimeScreen(
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        HeaderBackButton(title = type.label, onBackClick = { navigator.navigateUp() })
+        HeaderBackButton(title = genre.title.toString(), onBackClick = { navigator.popBackStack() })
 
         when (pagingData.loadState.refresh) {
             is LoadState.Loading -> {

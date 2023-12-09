@@ -47,9 +47,6 @@ class HomeViewModel @Inject constructor(private val useCase: AnimeUseCase) : Vie
     private val _finished = MutableStateFlow<Resource<List<Anime>>>(Resource.loading())
     val finished: StateFlow<Resource<List<Anime>>> get() = _finished
 
-    private val _paging = mutableStateOf<Flow<PagingData<Anime>>>(emptyFlow())
-    val paging: State<Flow<PagingData<Anime>>> get() = _paging
-
     fun combineFlow() {
         viewModelScope.launch {
             combine(
@@ -68,14 +65,6 @@ class HomeViewModel @Inject constructor(private val useCase: AnimeUseCase) : Vie
                 .launchIn(viewModelScope)
         }
     }
-
-//    fun initViewModel(){
-//        spotLight()
-//        populars()
-//        movies()
-//        ongoings()
-//        finished()
-//    }
 
     private fun combine(){
 
@@ -120,13 +109,4 @@ class HomeViewModel @Inject constructor(private val useCase: AnimeUseCase) : Vie
                 .launchIn(viewModelScope)
         }
     }
-
-    fun paging(q: String){
-        viewModelScope.launch {
-            _paging.value = useCase.animeList(q)
-                .distinctUntilChanged()
-                .cachedIn(viewModelScope)
-        }
-    }
-
 }

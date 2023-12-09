@@ -33,7 +33,6 @@ import com.wahidabd.animeku.ui.component.anime.AnimeHeader
 import com.wahidabd.animeku.ui.component.anime.SynopsisContent
 import com.wahidabd.animeku.ui.component.lottie.LottieError
 import com.wahidabd.animeku.ui.component.lottie.LottieLoading
-import com.wahidabd.animeku.ui.screen.destinations.GenreScreenDestination
 import com.wahidabd.animeku.ui.theme.ColorPrimary
 import com.wahidabd.library.utils.exts.collectStateFlow
 
@@ -110,7 +109,7 @@ fun AnimeDetailScreen(
                             genres = anime.genres ?: emptyList(),
                             expanded = isSynopsisExpanded,
                             onClick = { genre ->
-                                navigator.navigate(GenreScreenDestination())
+//                                navigator.navigate(GenreScreenDestination(genre = genre))
                             }
                         )
                     }
