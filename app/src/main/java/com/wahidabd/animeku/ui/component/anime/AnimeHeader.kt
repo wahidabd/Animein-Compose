@@ -56,6 +56,7 @@ fun AnimeHeader(
     anime: AnimeDetail,
     isFavorite: Boolean = false,
     onBookmark: () -> Unit,
+    onComment: () -> Unit
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -226,7 +227,7 @@ fun AnimeHeader(
                     .padding(start = 4.dp, bottom = 8.dp)
                     .fillMaxWidth(0.42F),
             ) {
-                IconButton(onClick = {}) {
+                IconButton(onClick = { onComment() }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_chat),
                         tint = Color.White.copy(alpha = 0.45F),
@@ -235,7 +236,7 @@ fun AnimeHeader(
                     )
                 }
 
-                IconButton(onClick = {}) {
+                IconButton(onClick = { }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_download),
                         tint = Color.White.copy(alpha = 0.45F),
@@ -274,6 +275,7 @@ fun AnimeHeaderDetailPreview() {
             releaseDate = "1 Oktober 2002",
             studio = "Madhouse"
         ),
-        onBookmark = {}
+        onBookmark = {},
+        onComment = {}
     )
 }

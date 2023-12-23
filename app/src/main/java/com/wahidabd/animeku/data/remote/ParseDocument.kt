@@ -4,6 +4,8 @@ import com.wahidabd.animeku.data.remote.anime.dto.AnimeDetailResponse
 import com.wahidabd.animeku.data.remote.anime.dto.AnimeResponse
 import com.wahidabd.animeku.data.remote.anime.dto.EpisodeResponse
 import com.wahidabd.animeku.data.remote.anime.dto.GenreResponse
+import com.wahidabd.animeku.utils.constants.Endpoints
+import com.wahidabd.animeku.utils.fullTrim
 import com.wahidabd.library.utils.extensions.debug
 import org.jsoup.nodes.Document
 
@@ -20,7 +22,7 @@ fun parseAnime(doc: Document): List<AnimeResponse> {
 
     for (i in 0 until size) {
         val content = event.eq(i).select("div > div > a")
-        val slug = content.attr("href")
+        val slug = content.attr("href").fullTrim().replace(Endpoints.BASE_URL, "")
         val title = content.select("div.data > div.title > h2").text()
         val poster = content.select("div.content-thumb > img").attr("src")
         val type = content.select("div.content-thumb > div.type").text()
@@ -41,14 +43,14 @@ fun parseAnime(doc: Document): List<AnimeResponse> {
     return result
 }
 
-fun parseAnimeSearch(doc: Document): List<AnimeResponse>{
+fun parseAnimeSearch(doc: Document): List<AnimeResponse> {
     val result = mutableListOf<AnimeResponse>()
     val event = doc.select("main > article")
     val size = event.size
 
     for (i in 0 until size) {
         val content = event.eq(i).select("div > div > a")
-        val slug = content.attr("href")
+        val slug = content.attr("href").fullTrim().replace(Endpoints.BASE_URL, "")
         val title = content.select("div.data > div.title > h2").text()
         val poster = content.select("div.content-thumb > img").attr("src")
         val type = content.select("div.content-thumb > div.type").text()
@@ -98,7 +100,7 @@ fun parseAnimeDetail(doc: Document): AnimeDetailResponse {
 
     // genres
     for (i in 0 until eventGenre.size) {
-        val genreSlug = eventGenre.eq(i).attr("href")
+        val genreSlug = eventGenre.eq(i).attr("href").fullTrim().replace(Endpoints.BASE_URL, "")
         val genreTitle = eventGenre.eq(i).text()
         genres.add(GenreResponse(slug = genreSlug, title = genreTitle))
     }
@@ -128,7 +130,9 @@ fun parseEpisode(doc: Document): List<EpisodeResponse> {
 
     // episodes
     for (i in 0 until eventEpisode.size) {
-        val episodeSlug = eventEpisode.eq(i).select("div.epsright > span > a").attr("href")
+        val episodeSlug =
+            eventEpisode.eq(i).select("div.epsright > span > a").attr("href").fullTrim()
+                .replace(Endpoints.BASE_URL, "")
         val episodeTitle = eventEpisode.eq(i).select("div.epsleft > span.lchx > a").text()
         val episodeNumber = eventEpisode.eq(i).select("div.epsright > span > a").text()
         val episodeDate = eventEpisode.eq(i).select("div.epsleft > span.date").text()

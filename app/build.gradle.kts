@@ -63,6 +63,8 @@ kotlin {
 }
 
 dependencies {
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))
+
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.1")
@@ -117,6 +119,14 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.48")
     ksp("com.google.dagger:hilt-compiler:2.48")
 
+    // Supabase
+    implementation(platform("io.github.jan-tennert.supabase:bom:2.0.1"))
+    implementation("io.github.jan-tennert.supabase:postgrest-kt")
+    implementation("io.github.jan-tennert.supabase:realtime-kt")
+
+    // Ktor
+    implementation("io.ktor:ktor-client-okhttp:2.3.7")
+
     // Pagination
     implementation("androidx.paging:paging-compose:3.3.0-alpha02")
 
@@ -130,6 +140,4 @@ dependencies {
 
     // Jsoup
     implementation("org.jsoup:jsoup:1.15.4")
-
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))
 }

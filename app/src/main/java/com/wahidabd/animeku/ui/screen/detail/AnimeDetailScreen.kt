@@ -33,6 +33,7 @@ import com.wahidabd.animeku.ui.component.anime.AnimeHeader
 import com.wahidabd.animeku.ui.component.anime.SynopsisContent
 import com.wahidabd.animeku.ui.component.lottie.LottieError
 import com.wahidabd.animeku.ui.component.lottie.LottieLoading
+import com.wahidabd.animeku.ui.screen.destinations.CommentScreenDestination
 import com.wahidabd.animeku.ui.theme.ColorPrimary
 import com.wahidabd.library.utils.exts.collectStateFlow
 
@@ -93,7 +94,8 @@ fun AnimeDetailScreen(
                         AnimeHeader(
                             anime = anime,
                             isFavorite = isFavorite.value,
-                            onBookmark = { alertDialog.value = true }
+                            onBookmark = { alertDialog.value = true },
+                            onComment = {navigator.navigate(CommentScreenDestination(slug = slug))},
                         )
                     }
                     item { Spacer(modifier = Modifier.height(90.dp)) }

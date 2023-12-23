@@ -8,7 +8,7 @@ package com.wahidabd.animeku.utils.constants
 
 
 object Endpoints {
-    const val BASE_URL = "https://oploverz.red/"
+    const val BASE_URL = "https://oploverz.life/"
     const val ANIME_LIST = "${BASE_URL}anime-list/"
     const val SPOTLIGHT = "?order=popular&status=Currently+Airing"
     const val POPULAR = "?order=popular"

@@ -10,6 +10,7 @@ import com.wahidabd.animeku.domain.anime.local.AnimeLocalInteractor
 import com.wahidabd.animeku.domain.anime.local.AnimeLocalUseCase
 import com.wahidabd.animeku.domain.anime.remote.AnimeInteractor
 import com.wahidabd.animeku.domain.anime.remote.AnimeUseCase
+import com.wahidabd.animeku.utils.PreferenceManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,6 +28,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Singleton
+    @Provides
+    fun injectPreferenceManager(@ApplicationContext context: Context) =
+        PreferenceManager(context)
 
     @Singleton
     @Provides

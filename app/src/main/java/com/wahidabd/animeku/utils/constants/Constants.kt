@@ -19,4 +19,12 @@ object Constants {
     const val PLAYER_CONTROLS_VISIBILITY = 5 * 1000L //5 seconds
     const val PLAYER_SEEK_BACK_INCREMENT = 5 * 1000L //5 seconds
     const val PLAYER_SEEK_FORWARD_INCREMENT = 10 * 1000L //10 seconds
+
+    // shared preferences
+    const val PREF_NAME = "animeku_pref"
+    const val PREF_LOGIN = "login"
+    const val PREF_UID = "uid"
+    const val PREF_USERNAME = "username"
+    const val PREF_EMAIL = "email"
+    const val PREF_PHOTO = "photo"
 }

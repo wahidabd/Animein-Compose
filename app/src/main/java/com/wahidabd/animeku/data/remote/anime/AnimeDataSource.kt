@@ -11,7 +11,6 @@ import com.wahidabd.animeku.data.remote.parseAnime
 import com.wahidabd.animeku.data.remote.parseAnimeDetail
 import com.wahidabd.animeku.data.remote.parseEpisode
 import com.wahidabd.animeku.utils.constants.Endpoints
-import com.wahidabd.animeku.utils.enums.AnimeType
 import com.wahidabd.animeku.utils.enums.PagingType
 import com.wahidabd.library.data.Resource
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +35,7 @@ class AnimeDataSource : AnimeRepository {
 
             if (result.isNotEmpty()) emit(Resource.Success(result))
             else emit(Resource.empty())
-        }catch (e: Exception){
+        } catch (e: Exception) {
             emit(Resource.fail(e.message.toString()))
         }
     }.flowOn(Dispatchers.IO)
@@ -99,7 +98,7 @@ class AnimeDataSource : AnimeRepository {
 
     override suspend fun detail(slug: String): Flow<Resource<AnimeDetailResponse>> = flow {
         try {
-            val doc = Jsoup.connect(slug).get()
+            val doc = Jsoup.connect(Endpoints.BASE_URL + slug).get()
             val result = parseAnimeDetail(doc)
 
             emit(Resource.Success(result))
@@ -110,7 +109,7 @@ class AnimeDataSource : AnimeRepository {
 
     override suspend fun episode(slug: String): Flow<Resource<List<EpisodeResponse>>> = flow {
         try {
-            val doc = Jsoup.connect(slug).get()
+            val doc = Jsoup.connect(Endpoints.BASE_URL + slug).get()
             val result = parseEpisode(doc)
 
             if (result.isNotEmpty()) emit(Resource.Success(result))
@@ -127,9 +126,10 @@ class AnimeDataSource : AnimeRepository {
                 config = PagingConfig(
                     pageSize = 10,
                     enablePlaceholders = false
-                ), pagingSourceFactory = { AnimePagingSource(Endpoints.SEARCH + q, PagingType.SEARCH) }
+                ),
+                pagingSourceFactory = { AnimePagingSource(Endpoints.SEARCH + q, PagingType.SEARCH) }
             ).flow
-        }catch (e: Exception){
+        } catch (e: Exception) {
             throw Exception(e.message.toString())
         }
 
@@ -139,9 +139,9 @@ class AnimeDataSource : AnimeRepository {
                 config = PagingConfig(
                     pageSize = 10,
                     enablePlaceholders = false,
-                ), pagingSourceFactory = {AnimePagingSource(endpoint, PagingType.GENRE)}
+                ), pagingSourceFactory = { AnimePagingSource(endpoint, PagingType.GENRE) }
             ).flow
-        }catch (e: Exception){
+        } catch (e: Exception) {
             throw Exception(e.message.toString())
         }
 
